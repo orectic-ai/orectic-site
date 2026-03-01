@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 /* ═══════════════════════════════════════════
    DESIGN TOKENS
@@ -1030,6 +1031,7 @@ export default function OrecticV2() {
         <Investment />
         <Discovery />
         <Footer />
+        <Analytics />
       </div>
     </>
   );
