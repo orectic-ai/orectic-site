@@ -519,11 +519,11 @@ function Pricing() {
 
   const tiers = [
     {
-      revenue: "For businesses doing $500K\u20132M in revenue",
+      revenue: "For businesses doing $500K–2M in revenue",
       name: "Your first Oracle",
       price: "$1,500/month",
       deployment: "$5,000 one-time deployment",
-      roi: "10:1 ROI \u2014 replaces a $41K/year role",
+      roi: "10:1 ROI — replaces a $41K/year role",
       features: [
         "Full 16-category extraction (up to 500 sources, any file type)",
         "Command Center dashboard",
@@ -535,11 +535,11 @@ function Pricing() {
       featured: false,
     },
     {
-      revenue: "For businesses doing $2M\u201315M in revenue",
+      revenue: "For businesses doing $2M–15M in revenue",
       name: "Full intelligence operations",
-      price: "Typically $4,000\u2013$6,000/month",
+      price: "Typically $4,000–$6,000/month",
       priceIsRange: true,
-      roi: "4:1 ROI \u2014 replaces $220K\u2013$340K/year across CoS, department heads, and EA roles",
+      roi: "4:1 ROI — replaces $220K–$340K/year across CoS, department heads, and EA roles",
       features: [
         "Everything in Starter",
         "Unlimited source processing across all file types",
@@ -556,9 +556,9 @@ function Pricing() {
     {
       revenue: "For businesses doing $15M+ in revenue",
       name: "Enterprise command center",
-      price: "Custom \u2014 scoped in your Discovery Sprint",
+      price: "Custom — scoped in your Discovery Sprint",
       priceIsRange: true,
-      roi: "5:1 ROI \u2014 replaces $470K\u2013$950K/year in ops teams, tools, and consulting",
+      roi: "5:1 ROI — replaces $470K–$950K/year in ops teams, tools, and consulting",
       features: [
         "Everything in Growth",
         "Multi-department deployment",
@@ -576,14 +576,14 @@ function Pricing() {
   ];
 
   const faqs = [
-    ["What is The Extraction?", "We process every file your business has ever created \u2014 recordings, documents, messages, spreadsheets, contracts, videos \u2014 into 16 categories of structured intelligence. Not summaries. Structured, searchable, actionable intelligence your Oracle uses to know your business."],
-    ["How quickly does my Oracle go live?", "48 hours from intake completion to first intelligence delivery. Not 48 hours to a demo \u2014 48 hours to a working Oracle with your actual data."],
-    ["What data sources can you process?", "Everything. PDFs, Word docs, slide decks, spreadsheets, call recordings, Loom videos, voice memos, Slack exports, email threads, CRM dumps, Notion exports, calendar data, contracts, proposals \u2014 17 file types and growing. If your business created it, your Oracle can learn from it."],
+    ["What is The Extraction?", "We process every file your business has ever created — recordings, documents, messages, spreadsheets, contracts, videos — into 16 categories of structured intelligence. Not summaries. Structured, searchable, actionable intelligence your Oracle uses to know your business."],
+    ["How quickly does my Oracle go live?", "48 hours from intake completion to first intelligence delivery. Not 48 hours to a demo — 48 hours to a working Oracle with your actual data."],
+    ["What data sources can you process?", "Everything. PDFs, Word docs, slide decks, spreadsheets, call recordings, Loom videos, voice memos, Slack exports, email threads, CRM dumps, Notion exports, calendar data, contracts, proposals — 17 file types and growing. If your business created it, your Oracle can learn from it."],
     ["Do I need to change my tools?", "No. Your Oracle integrates with the tools you already use and ingests data from sources you don't have integrations for. Drop a folder of files from 2019. Upload a CRM export. Record a Loom walkthrough. It all becomes intelligence."],
-    ["What\u2019s the deployment fee?", "A one-time investment that covers extracting your intelligence and configuring your Oracle. Think of it as the difference between installing software and deploying an intelligence function. The Extraction alone is often worth more than the fee."],
-    ["Can I try it before committing?", "We\u2019ll process a sample of your actual data during the Discovery Sprint. You\u2019ll see your own intelligence \u2014 your people, your opportunities, your commitments \u2014 extracted from your own files before you decide anything. If it\u2019s not useful, you\u2019ve lost 30 minutes. If it is, you\u2019ve found your Oracle."],
-    ["What if I want to bring my own API keys?", "Available as a monthly cost modifier within any tier. We\u2019ll discuss during your Discovery Sprint."],
-    ["How is this different from Fathom, Gong, Notion AI, etc.?", "They summarize meetings or search within one workspace. We extract intelligence across everything \u2014 recordings, documents, messages, spreadsheets, contracts, videos \u2014 cross-reference it into a unified knowledge graph, and deploy an Oracle that acts on it. They help you remember one meeting. We help you operate across your entire business history."],
+    ["What's the deployment fee?", "A one-time investment that covers extracting your intelligence and configuring your Oracle. Think of it as the difference between installing software and deploying an intelligence function. The Extraction alone is often worth more than the fee."],
+    ["Can I try it before committing?", "We'll process a sample of your actual data during the Discovery Sprint. You'll see your own intelligence — your people, your opportunities, your commitments — extracted from your own files before you decide anything. If it's not useful, you've lost 30 minutes. If it is, you've found your Oracle."],
+    ["What if I want to bring my own API keys?", "Available as a monthly cost modifier within any tier. We'll discuss during your Discovery Sprint."],
+    ["How is this different from Fathom, Gong, Notion AI, etc.?", "They summarize meetings or search within one workspace. We extract intelligence across everything — recordings, documents, messages, spreadsheets, contracts, videos — cross-reference it into a unified knowledge graph, and deploy an Oracle that acts on it. They help you remember one meeting. We help you operate across your entire business history."],
   ];
 
   return (
@@ -596,7 +596,7 @@ function Pricing() {
             fontFamily: FONT.b, fontSize: 17, color: C.t2, textAlign: "center",
             marginBottom: 48, maxWidth: 600, margin: "0 auto 48px",
           }}>
-            Most clients invest $2,000\u2013$6,000/month depending on business size and data complexity.
+            Most clients invest $2,000–$6,000/month depending on business size and data complexity.
           </p>
         </Reveal>
 
@@ -1068,15 +1068,15 @@ function Platform() {
   const points = [
     {
       title: "Every extraction improves the system.",
-      body: "Intelligence isn\u2019t static. Each new source processed deepens the cross-references, surfaces patterns across a longer timeline, and teaches your Oracle more about how your business actually operates.",
+      body: "Intelligence isn't static. Each new source processed deepens the cross-references, surfaces patterns across a longer timeline, and teaches your Oracle more about how your business actually operates.",
     },
     {
       title: "Your data. Only your data.",
-      body: "Your Oracle never sees another client\u2019s information \u2014 by architecture, not by policy. Isolation is enforced at the infrastructure level, not the permission level.",
+      body: "Your Oracle never sees another client's information — by architecture, not by policy. Isolation is enforced at the infrastructure level, not the permission level.",
     },
     {
       title: "Infrastructure that grows with you.",
-      body: "Cloud-native architecture designed for thousands of tenants. Adding sources, users, or departments doesn\u2019t require new infrastructure \u2014 it just works.",
+      body: "Cloud-native architecture designed for thousands of tenants. Adding sources, users, or departments doesn't require new infrastructure — it just works.",
     },
     {
       title: "Every industry makes the next one smarter.",
