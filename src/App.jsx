@@ -2007,8 +2007,9 @@ function Footer() {
         &copy; 2026 Orectic &middot; orectic.ai &middot; Austin, TX
       </span>
       <span style={{ color: C.t4 }}>&middot;</span>
-      <a href="#" style={{ fontFamily: FONT.m, fontSize: 11, color: C.t4, textDecoration: "none" }}>Privacy</a>
-      <a href="#" style={{ fontFamily: FONT.m, fontSize: 11, color: C.t4, textDecoration: "none" }}>Terms</a>
+      <a href="/privacy" style={{ fontFamily: FONT.m, fontSize: 11, color: C.t4, textDecoration: "none" }}>Privacy</a>
+      <a href="/terms" style={{ fontFamily: FONT.m, fontSize: 11, color: C.t4, textDecoration: "none" }}>Terms</a>
+      <a href="mailto:support@orectic.ai" style={{ fontFamily: FONT.m, fontSize: 11, color: C.t4, textDecoration: "none" }}>Support</a>
     </footer>
   );
 }

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — Orectic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #08080f;
+      --card: #111122;
+      --t1: #f0ecf7;
+      --t2: #a8a0b8;
+      --t3: #6b6580;
+      --t4: #4a4460;
+      --gold: #d4a853;
+      --gold-dim: rgba(212,168,83,0.12);
+      --gold-border: rgba(212,168,83,0.18);
+      --purple: #6b21a8;
+      --border: rgba(212,168,83,0.08);
+      --border-h: rgba(212,168,83,0.22);
+      --font-d: 'Playfair Display', Georgia, serif;
+      --font-b: 'DM Sans', -apple-system, sans-serif;
+      --font-m: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--t1);
+      font-family: var(--font-b);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,8,15,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(24px, 5vw, 80px);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-logo {
+      font-family: var(--font-d);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--t1);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-family: var(--font-m);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--t3);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--t1); }
+
+    /* ── LAYOUT ── */
+    .page-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 5vw, 80px);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 64px;
+      align-items: start;
+      padding-top: 64px;
+      padding-bottom: 120px;
+    }
+
+    @media (max-width: 768px) {
+      .page-wrapper {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding-top: 0;
+      }
+    }
+
+    /* ── MOBILE TOC DROPDOWN ── */
+    .toc-mobile {
+      display: none;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 16px clamp(24px, 5vw, 80px);
+    }
+
+    @media (max-width: 768px) {
+      .toc-mobile { display: block; }
+    }
+
+    .toc-mobile summary {
+      font-family: var(--font-m);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+      outline: none;
+    }
+
+    .toc-mobile summary::after {
+      content: '▾';
+      transition: transform 0.2s;
+    }
+
+    .toc-mobile[open] summary::after {
+      transform: rotate(180deg);
+    }
+
+    .toc-mobile-list {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .toc-mobile-list a {
+      font-family: var(--font-b);
+      font-size: 13px;
+      color: var(--t2);
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+
+    .toc-mobile-list a:last-child { border-bottom: none; }
+    .toc-mobile-list a:hover { color: var(--gold); }
+
+    /* ── SIDEBAR TOC ── */
+    .toc-sidebar {
+      position: sticky;
+      top: 88px;
+      align-self: start;
+    }
+
+    @media (max-width: 768px) {
+      .toc-sidebar { display: none; }
+    }
+
+    .toc-label {
+      font-family: var(--font-m);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--t4);
+      margin-bottom: 16px;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toc-list a {
+      display: block;
+      font-family: var(--font-b);
+      font-size: 13px;
+      color: var(--t3);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-left: 2px solid transparent;
+      border-radius: 0 4px 4px 0;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+
+    .toc-list a:hover {
+      color: var(--t1);
+      border-left-color: var(--gold-border);
+      background: var(--gold-dim);
+    }
+
+    .toc-list a.active {
+      color: var(--gold);
+      border-left-color: var(--gold);
+      background: var(--gold-dim);
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      min-width: 0;
+      padding-top: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 48px clamp(24px, 5vw, 48px) 80px;
+      }
+    }
+
+    .doc-header {
+      margin-bottom: 56px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc-eyebrow {
+      font-family: var(--font-m);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .doc-title {
+      font-family: var(--font-d);
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--t1);
+      margin-bottom: 20px;
+    }
+
+    .doc-meta {
+      font-family: var(--font-m);
+      font-size: 12px;
+      color: var(--t3);
+      letter-spacing: 0.04em;
+    }
+
+    .doc-meta span { color: var(--t2); }
+
+    /* ── SECTIONS ── */
+    .doc-section {
+      margin-bottom: 56px;
+      scroll-margin-top: 88px;
+    }
+
+    h2 {
+      font-family: var(--font-d);
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--t1);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-family: var(--font-d);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--t1);
+      margin-top: 32px;
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    p {
+      color: var(--t2);
+      margin-bottom: 16px;
+      line-height: 1.8;
+    }
+
+    ul {
+      list-style: none;
+      margin-bottom: 16px;
+    }
+
+    ul li {
+      position: relative;
+      padding-left: 20px;
+      color: var(--t2);
+      margin-bottom: 10px;
+      line-height: 1.75;
+    }
+
+    ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    strong { color: var(--t1); font-weight: 600; }
+
+    a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    a:hover { opacity: 0.75; }
+
+    /* ── CAPS BLOCK ── */
+    .caps-block {
+      background: var(--card);
+      border: 1px solid var(--border-h);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 20px 0;
+      font-family: var(--font-b);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--t2);
+      letter-spacing: 0.01em;
+    }
+
+    /* ── CONTACT CARD ── */
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border-h);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-top: 24px;
+    }
+
+    .contact-card p { margin-bottom: 8px; }
+    .contact-card p:last-child { margin-bottom: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px clamp(24px, 5vw, 80px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-family: var(--font-m);
+      font-size: 11px;
+      color: var(--t4);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-sep {
+      color: var(--t4);
+      font-size: 11px;
+    }
+
+    .footer-link {
+      font-family: var(--font-m);
+      font-size: 11px;
+      color: var(--t4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover { color: var(--t2); opacity: 1; }
+    .footer-link.active { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Orectic<span>.</span></a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+  </div>
+</nav>
+
+<!-- MOBILE TOC -->
+<details class="toc-mobile">
+  <summary>Table of Contents</summary>
+  <div class="toc-mobile-list">
+    <a href="#s1">1. Acceptance of Terms</a>
+    <a href="#s2">2. Description of Services</a>
+    <a href="#s3">3. Accounts and Registration</a>
+    <a href="#s4">4. Your Data and Content</a>
+    <a href="#s5">5. Orectic Intellectual Property</a>
+    <a href="#s6">6. Acceptable Use Policy</a>
+    <a href="#s7">7. Payment Terms</a>
+    <a href="#s8">8. Refund Policy</a>
+    <a href="#s9">9. Term and Termination</a>
+    <a href="#s10">10. Limitation of Liability</a>
+    <a href="#s11">11. Indemnification</a>
+    <a href="#s12">12. Dispute Resolution</a>
+    <a href="#s13">13. Modifications to Terms</a>
+    <a href="#s14">14. General Provisions</a>
+    <a href="#s15">15. Contact Information</a>
+  </div>
+</details>
+
+<div class="page-wrapper">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="toc-sidebar" aria-label="Table of contents">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-list" id="toc-list">
+      <li><a href="#s1">1. Acceptance of Terms</a></li>
+      <li><a href="#s2">2. Description of Services</a></li>
+      <li><a href="#s3">3. Accounts and Registration</a></li>
+      <li><a href="#s4">4. Your Data and Content</a></li>
+      <li><a href="#s5">5. Orectic Intellectual Property</a></li>
+      <li><a href="#s6">6. Acceptable Use Policy</a></li>
+      <li><a href="#s7">7. Payment Terms</a></li>
+      <li><a href="#s8">8. Refund Policy</a></li>
+      <li><a href="#s9">9. Term and Termination</a></li>
+      <li><a href="#s10">10. Limitation of Liability</a></li>
+      <li><a href="#s11">11. Indemnification</a></li>
+      <li><a href="#s12">12. Dispute Resolution</a></li>
+      <li><a href="#s13">13. Modifications to Terms</a></li>
+      <li><a href="#s14">14. General Provisions</a></li>
+      <li><a href="#s15">15. Contact Information</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+
+    <header class="doc-header">
+      <div class="doc-eyebrow">Legal Document</div>
+      <h1 class="doc-title">Terms of Service</h1>
+      <div class="doc-meta">
+        Orectic, LLC &nbsp;&middot;&nbsp; orectic.ai | app.orectic.ai<br />
+        Effective Date: <span>April 13, 2026</span> &nbsp;&middot;&nbsp; Last Updated: <span>April 13, 2026</span>
+      </div>
+    </header>
+
+    <!-- 1 -->
+    <section class="doc-section" id="s1">
+      <h2>1. Acceptance of Terms</h2>
+      <p>These Terms of Service ("Terms") constitute a legally binding agreement between you ("You," "Your," or "Client") and Orectic, LLC, a Texas limited liability company ("Orectic," "we," "us," or "our"). These Terms govern your access to and use of the Orectic platform, including the websites at orectic.ai and app.orectic.ai, the intelligence extraction pipeline, the Oracle agent system, the Command Center dashboard, and all related services (collectively, the "Services").</p>
+      <p>By creating an account, accessing the Services, or otherwise indicating your acceptance (for example, by clicking "I agree" or a similar mechanism), you agree to be bound by these Terms. If you are entering into these Terms on behalf of a company or other legal entity, you represent that you have the authority to bind that entity. If you do not agree to these Terms, do not access or use the Services.</p>
+      <p>These Terms incorporate by reference our <a href="/privacy">Privacy Policy</a>, which governs our collection, use, and disclosure of your information.</p>
+    </section>
+
+    <!-- 2 -->
+    <section class="doc-section" id="s2">
+      <h2>2. Description of Services</h2>
+
+      <h3>2.1 The Orectic Platform</h3>
+      <p>Orectic is an AI-powered autonomous intelligence operating system that processes unstructured business data into structured, actionable intelligence. The platform consists of:</p>
+      <ul>
+        <li><strong>Intelligence Extraction Pipeline:</strong> Ingests business data across multiple file types (transcripts, documents, emails, audio, video, PDFs, spreadsheets, and other formats) and extracts structured intelligence across multiple categories including people, businesses, opportunities, commitments, frameworks, problems, alerts, and content.</li>
+        <li><strong>Oracle Agent System:</strong> An autonomous AI agent that reasons over extracted intelligence to answer questions, surface insights, and execute operational tasks on behalf of the client, delivered through messaging channels including Telegram, with additional channels on the roadmap.</li>
+        <li><strong>Command Center Dashboard:</strong> A web-based interface at app.orectic.ai where extracted intelligence is browsable, searchable, and exportable.</li>
+        <li><strong>Integration Layer:</strong> Connections to third-party tools and services (CRM, email, calendar, payment systems, and others) that allow the Oracle to cross-validate intelligence against live data and take authorized actions.</li>
+      </ul>
+
+      <h3>2.2 Service Tiers</h3>
+      <p>Orectic offers multiple subscription tiers with varying levels of service, features, and support. The specific features, limitations, and pricing of each tier are described on our website and in applicable Order Forms or subscription agreements. We reserve the right to modify our service tiers, features, and pricing at any time, subject to Section 7.</p>
+
+      <h3>2.3 Service Availability</h3>
+      <p>We strive to maintain high availability of the Services but do not guarantee uninterrupted access. The Services may be temporarily unavailable due to scheduled maintenance, updates, or circumstances beyond our reasonable control. We will make reasonable efforts to provide advance notice of planned downtime.</p>
+    </section>
+
+    <!-- 3 -->
+    <section class="doc-section" id="s3">
+      <h2>3. Accounts and Registration</h2>
+
+      <h3>3.1 Account Creation</h3>
+      <p>To access the Services, you must create an account by providing accurate and complete registration information. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to notify us immediately at <a href="mailto:security@orectic.ai">security@orectic.ai</a> if you become aware of any unauthorized use of your account.</p>
+
+      <h3>3.2 Account Eligibility</h3>
+      <p>You must be at least 18 years of age and have the legal capacity to enter into a binding agreement to use the Services. If you are using the Services on behalf of an organization, you represent and warrant that you are authorized to bind that organization to these Terms.</p>
+
+      <h3>3.3 Account Security</h3>
+      <p>You are solely responsible for safeguarding your account credentials and for any activity conducted through your account. Orectic shall not be liable for any loss or damage arising from your failure to maintain the security of your account.</p>
+    </section>
+
+    <!-- 4 -->
+    <section class="doc-section" id="s4">
+      <h2>4. Your Data and Content</h2>
+
+      <h3>4.1 Ownership of Your Data</h3>
+      <p>You retain all ownership rights in the data, content, and materials you upload, transmit, or otherwise provide to the Services ("Your Data"). Your Data includes but is not limited to: business transcripts, documents, emails, audio files, video files, spreadsheets, and any other content you provide for processing through our intelligence extraction pipeline. Nothing in these Terms transfers ownership of Your Data to Orectic.</p>
+
+      <h3>4.2 License Grant to Orectic</h3>
+      <p>By uploading or otherwise providing Your Data to the Services, you grant Orectic a non-exclusive, worldwide, royalty-free license to access, use, process, copy, store, transmit, and display Your Data solely for the purposes of: (a) providing, maintaining, and improving the Services; (b) generating extracted intelligence and structured outputs as part of the platform's core functionality; (c) delivering Oracle agent services; and (d) performing any other actions reasonably necessary to provide the Services to you. This license terminates when Your Data is deleted from our systems in accordance with these Terms and our Privacy Policy.</p>
+
+      <h3>4.3 Extracted Intelligence</h3>
+      <p>The structured intelligence generated by the Orectic platform from Your Data ("Extracted Intelligence") — including but not limited to entities, relationships, opportunities, commitments, alerts, and normalized datasets — is derived from Your Data and is provided to you as part of the Services. You may export and use Extracted Intelligence for your own business purposes. Orectic retains the right to use aggregated, de-identified metadata and statistical patterns derived from the extraction process to improve the platform, as described in our Privacy Policy.</p>
+
+      <h3>4.4 Data Responsibilities</h3>
+      <p>You are solely responsible for: (a) the accuracy, quality, and legality of Your Data; (b) ensuring that you have all necessary rights, permissions, and consents to provide Your Data to Orectic for processing; (c) ensuring that Your Data does not infringe or violate the rights of any third party; and (d) complying with all applicable data protection laws in connection with your collection and provision of Your Data to the Services.</p>
+
+      <h3>4.5 Data Processing</h3>
+      <p>Your Data is processed through our intelligence extraction pipeline, which utilizes third-party AI language model providers (including Anthropic and OpenAI) as described in our Privacy Policy. By using the Services, you acknowledge and consent to the processing of Your Data through these third-party providers for the purpose of providing the Services.</p>
+
+      <h3>4.6 Data Isolation</h3>
+      <p>Orectic maintains strict tenant isolation. Your Data is logically separated from the data of other clients using per-tenant storage paths and access controls. Your raw business data is never shared with, visible to, or accessible by other clients.</p>
+    </section>
+
+    <!-- 5 -->
+    <section class="doc-section" id="s5">
+      <h2>5. Orectic Intellectual Property</h2>
+
+      <h3>5.1 Orectic's Ownership</h3>
+      <p>Orectic retains all right, title, and interest in and to the Services and all related technology, including but not limited to: the extraction pipeline and all versions thereof, the Oracle agent system, the Command Center dashboard, the normalization and vectorization infrastructure, all algorithms and methodologies, all software and source code, all architecture specifications, the Argus OS governance layer, all SKILL.md files and operating frameworks, all brand assets (including the "Orectic" name, logos, and design system), and all improvements, modifications, and derivative works thereof (collectively, "Orectic IP"). Nothing in these Terms grants you any ownership interest in the Orectic IP.</p>
+
+      <h3>5.2 Limited License to You</h3>
+      <p>Subject to your compliance with these Terms and payment of all applicable fees, Orectic grants you a limited, non-exclusive, non-transferable, non-sublicensable, revocable license to access and use the Services during your subscription term solely for your internal business purposes. This license does not include the right to: (a) sublicense, resell, distribute, or make the Services available to any third party; (b) modify, copy, or create derivative works based on the Services; (c) reverse engineer, decompile, or disassemble the Services; (d) access the Services for the purpose of building a competing product or service; or (e) use the Services to develop, train, or improve any AI or machine learning model.</p>
+
+      <h3>5.3 Feedback</h3>
+      <p>If you provide feedback, suggestions, ideas, or recommendations regarding the Services ("Feedback"), you grant Orectic a perpetual, irrevocable, worldwide, royalty-free license to use, modify, and incorporate such Feedback into the Services without obligation to you.</p>
+    </section>
+
+    <!-- 6 -->
+    <section class="doc-section" id="s6">
+      <h2>6. Acceptable Use Policy</h2>
+      <p>You agree to use the Services only for lawful purposes and in compliance with these Terms. You shall not:</p>
+      <ul>
+        <li>Use the Services to process, store, or transmit any content that is unlawful, harmful, threatening, abusive, harassing, defamatory, obscene, or otherwise objectionable.</li>
+        <li>Upload or provide data that you do not have the legal right to collect, use, or share, including data obtained without proper consent or in violation of applicable data protection laws.</li>
+        <li>Attempt to gain unauthorized access to the Services, other users' accounts, or the underlying infrastructure, including other tenants' data.</li>
+        <li>Interfere with or disrupt the integrity or performance of the Services or the data contained therein.</li>
+        <li>Use the Services to develop, train, or improve any AI or machine learning model outside of the Services.</li>
+        <li>Use automated tools, bots, scrapers, or similar technology to access the Services in a manner that exceeds normal usage patterns or that is designed to extract data from the Services.</li>
+        <li>Reverse engineer, decompile, disassemble, or otherwise attempt to discover the source code, algorithms, or underlying architecture of the Services.</li>
+        <li>Sublicense, resell, rent, lease, or otherwise make the Services available to third parties without Orectic's prior written consent.</li>
+        <li>Use the Services to store or process data subject to specific regulatory requirements (such as HIPAA-protected health information, ITAR-controlled data, or classified government data) unless and until Orectic has confirmed in writing that appropriate compliance measures are in place.</li>
+        <li>Misrepresent your identity, your affiliation, or the source of any data provided to the Services.</li>
+        <li>Use the Oracle agent system to generate content that is fraudulent, deceptive, or designed to impersonate another person or entity without proper authorization.</li>
+      </ul>
+      <p>Orectic reserves the right to suspend or terminate your account if we reasonably believe you are in violation of this Acceptable Use Policy, with or without prior notice depending on the severity of the violation.</p>
+    </section>
+
+    <!-- 7 -->
+    <section class="doc-section" id="s7">
+      <h2>7. Payment Terms</h2>
+
+      <h3>7.1 Fees</h3>
+      <p>You agree to pay all fees associated with your selected subscription tier as described on our website, in the applicable Order Form, or as otherwise agreed in writing. Fees are quoted in U.S. dollars unless otherwise specified.</p>
+
+      <h3>7.2 Billing</h3>
+      <p>Subscription fees are billed in advance on a monthly basis unless otherwise agreed. Deployment fees and one-time setup fees are billed upon commencement of the applicable services. Payment is due within fifteen (15) days of invoice unless otherwise specified in an Order Form.</p>
+
+      <h3>7.3 Payment Methods</h3>
+      <p>We accept payment via credit card, ACH transfer, or wire transfer. Payment processing is handled by our third-party payment processor (currently Stripe). By providing payment information, you represent that you are authorized to use the payment method and authorize Orectic to charge the applicable fees.</p>
+
+      <h3>7.4 Price Changes</h3>
+      <p>Orectic may modify its pricing at any time. Price changes will take effect at the start of your next billing cycle following at least thirty (30) days' written notice. If you do not agree to a price change, you may cancel your subscription before the effective date of the change.</p>
+
+      <h3>7.5 Late Payments</h3>
+      <p>Overdue amounts accrue interest at the lesser of 1.5% per month or the maximum rate permitted by law. Orectic may suspend the Services if payment is more than fifteen (15) days overdue, after providing at least five (5) days' written notice of intent to suspend.</p>
+
+      <h3>7.6 Taxes</h3>
+      <p>All fees are exclusive of applicable taxes. You are responsible for all sales, use, value-added, and similar taxes arising from your use of the Services, except for taxes based on Orectic's income. If Orectic is required to collect taxes, such taxes will be added to your invoice.</p>
+    </section>
+
+    <!-- 8 -->
+    <section class="doc-section" id="s8">
+      <h2>8. Refund Policy</h2>
+
+      <h3>8.1 Subscription Fees</h3>
+      <p>Monthly subscription fees are non-refundable once the billing period has begun. If you cancel your subscription, you will retain access to the Services through the end of your current billing period. No prorated refunds are provided for partial months.</p>
+
+      <h3>8.2 Deployment Fees</h3>
+      <p>Deployment fees cover the initial data extraction, pipeline configuration, and Oracle setup for your tenant. Deployment fees are non-refundable once extraction processing has begun. If Orectic is unable to complete the deployment due to causes within Orectic's control, Orectic will refund the deployment fee in full.</p>
+
+      <h3>8.3 Disputes</h3>
+      <p>If you believe you have been billed in error, you must notify Orectic in writing within thirty (30) days of the charge. Orectic will investigate and correct any confirmed billing errors. Disputes submitted after thirty (30) days may not be eligible for correction or refund.</p>
+    </section>
+
+    <!-- 9 -->
+    <section class="doc-section" id="s9">
+      <h2>9. Term and Termination</h2>
+
+      <h3>9.1 Subscription Term</h3>
+      <p>Your subscription begins on the date your account is activated and continues on a month-to-month basis unless a different term is specified in an Order Form. Either party may terminate the subscription by providing at least thirty (30) days' written notice before the end of the current billing period.</p>
+
+      <h3>9.2 Termination by Orectic</h3>
+      <p>Orectic may suspend or terminate your access to the Services immediately upon written notice if: (a) you breach any material provision of these Terms; (b) you fail to pay fees when due after notice and a five (5) day cure period; (c) you engage in conduct that violates the Acceptable Use Policy; or (d) continued provision of the Services to you would expose Orectic to legal liability or risk the security, integrity, or availability of the Services for other clients.</p>
+
+      <h3>9.3 Termination by You</h3>
+      <p>You may terminate your subscription at any time by providing thirty (30) days' written notice to Orectic. You may also terminate immediately if Orectic materially breaches these Terms and fails to cure such breach within thirty (30) days of written notice from you.</p>
+
+      <h3>9.4 Effect of Termination</h3>
+      <p>Upon termination of your subscription for any reason:</p>
+      <ul>
+        <li>Your access to the Services will be deactivated at the end of your current billing period (or immediately in cases of termination for cause by Orectic).</li>
+        <li>You will have thirty (30) days from the termination effective date to export Your Data and Extracted Intelligence from the platform. Orectic will provide reasonable assistance with data export upon request.</li>
+        <li>After the 30-day export period, Orectic will permanently delete Your Data, Extracted Intelligence, vector embeddings, and all associated data from our systems.</li>
+        <li>Termination does not relieve you of the obligation to pay any fees incurred prior to the termination effective date.</li>
+        <li>Sections 4.1 (Your Data ownership), 5 (Orectic IP), 10 (Limitation of Liability), 11 (Indemnification), 12 (Dispute Resolution), and 14 (General Provisions) survive termination.</li>
+      </ul>
+    </section>
+
+    <!-- 10 -->
+    <section class="doc-section" id="s10">
+      <h2>10. Limitation of Liability</h2>
+
+      <h3>10.1 Disclaimer of Warranties</h3>
+      <div class="caps-block">THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. ORECTIC DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, AND ANY WARRANTIES ARISING FROM COURSE OF DEALING OR USAGE OF TRADE. ORECTIC DOES NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, ERROR-FREE, OR COMPLETELY SECURE.</div>
+
+      <h3>10.2 AI-Generated Output Disclaimer</h3>
+      <div class="caps-block">THE SERVICES UTILIZE ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING TECHNOLOGIES TO PROCESS YOUR DATA AND GENERATE EXTRACTED INTELLIGENCE. AI-GENERATED OUTPUTS MAY CONTAIN ERRORS, INACCURACIES, OR OMISSIONS. ORECTIC DOES NOT GUARANTEE THE ACCURACY, COMPLETENESS, OR RELIABILITY OF ANY AI-GENERATED OUTPUT. YOU ARE SOLELY RESPONSIBLE FOR REVIEWING, VERIFYING, AND VALIDATING ALL EXTRACTED INTELLIGENCE AND ORACLE OUTPUTS BEFORE RELYING ON THEM FOR BUSINESS DECISIONS. THE SERVICES DO NOT PROVIDE LEGAL, FINANCIAL, MEDICAL, OR OTHER PROFESSIONAL ADVICE.</div>
+
+      <h3>10.3 Limitation of Damages</h3>
+      <div class="caps-block">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL ORECTIC, ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, OR AFFILIATES BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, LOSS OF DATA, LOSS OF BUSINESS OPPORTUNITY, OR COST OF PROCUREMENT OF SUBSTITUTE SERVICES, ARISING OUT OF OR RELATED TO THESE TERMS OR THE SERVICES, REGARDLESS OF THE THEORY OF LIABILITY (CONTRACT, TORT, STRICT LIABILITY, OR OTHERWISE) AND EVEN IF ORECTIC HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</div>
+
+      <h3>10.4 Cap on Liability</h3>
+      <div class="caps-block">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, ORECTIC'S TOTAL AGGREGATE LIABILITY ARISING OUT OF OR RELATED TO THESE TERMS OR THE SERVICES SHALL NOT EXCEED THE TOTAL AMOUNT OF FEES PAID BY YOU TO ORECTIC DURING THE TWELVE (12) MONTH PERIOD IMMEDIATELY PRECEDING THE EVENT GIVING RISE TO THE CLAIM.</div>
+
+      <h3>10.5 Essential Basis</h3>
+      <div class="caps-block">THE LIMITATIONS AND EXCLUSIONS IN THIS SECTION REFLECT A REASONABLE ALLOCATION OF RISK BETWEEN THE PARTIES AND ARE AN ESSENTIAL BASIS OF THE BARGAIN BETWEEN THE PARTIES. ORECTIC WOULD NOT PROVIDE THE SERVICES WITHOUT THESE LIMITATIONS.</div>
+    </section>
+
+    <!-- 11 -->
+    <section class="doc-section" id="s11">
+      <h2>11. Indemnification</h2>
+
+      <h3>11.1 Your Indemnification</h3>
+      <p>You agree to indemnify, defend, and hold harmless Orectic, its officers, directors, employees, agents, and affiliates from and against any and all claims, demands, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising out of or related to: (a) your use of the Services; (b) Your Data, including any claim that Your Data infringes or violates the rights of any third party; (c) your violation of these Terms; or (d) your violation of any applicable law or regulation.</p>
+
+      <h3>11.2 Orectic's Indemnification</h3>
+      <p>Orectic agrees to indemnify, defend, and hold harmless you from and against any third-party claim that the Services, as provided by Orectic, infringe any valid U.S. patent, copyright, or trademark of a third party, provided that you: (a) promptly notify Orectic in writing of such claim; (b) grant Orectic sole control of the defense and settlement; and (c) provide reasonable cooperation at Orectic's expense. Orectic's obligations under this section do not apply to claims arising from: (i) Your Data; (ii) modifications to the Services not made by Orectic; (iii) combination of the Services with non-Orectic products or services; or (iv) your use of the Services in violation of these Terms.</p>
+    </section>
+
+    <!-- 12 -->
+    <section class="doc-section" id="s12">
+      <h2>12. Dispute Resolution</h2>
+
+      <h3>12.1 Governing Law</h3>
+      <p>These Terms shall be governed by and construed in accordance with the laws of the State of Texas, without regard to its conflict of laws principles.</p>
+
+      <h3>12.2 Informal Resolution</h3>
+      <p>Before initiating any formal dispute resolution proceeding, the parties agree to attempt to resolve any dispute informally by contacting the other party in writing and negotiating in good faith for a period of at least thirty (30) days.</p>
+
+      <h3>12.3 Arbitration</h3>
+      <p>If a dispute cannot be resolved informally, the parties agree to submit the dispute to binding arbitration administered by the American Arbitration Association ("AAA") under its Commercial Arbitration Rules. The arbitration shall take place in Austin, Travis County, Texas. The arbitrator's decision shall be final and binding and may be entered as a judgment in any court of competent jurisdiction. Each party shall bear its own costs of arbitration, except that the prevailing party shall be entitled to recover reasonable attorneys' fees.</p>
+
+      <h3>12.4 Exceptions</h3>
+      <p>Notwithstanding the arbitration provision above, either party may seek injunctive or other equitable relief in any court of competent jurisdiction to protect its intellectual property rights, confidential information, or to prevent irreparable harm pending arbitration.</p>
+
+      <h3>12.5 Class Action Waiver</h3>
+      <div class="caps-block">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, YOU AND ORECTIC EACH WAIVE THE RIGHT TO PARTICIPATE IN A CLASS ACTION, CLASS ARBITRATION, OR OTHER REPRESENTATIVE PROCEEDING. ALL CLAIMS MUST BE BROUGHT IN THE PARTIES' INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING.</div>
+    </section>
+
+    <!-- 13 -->
+    <section class="doc-section" id="s13">
+      <h2>13. Modifications to Terms</h2>
+      <p>Orectic reserves the right to modify these Terms at any time. When we make material changes, we will notify you by posting the updated Terms on our website with a revised "Last Updated" date and, where required by law or where the changes materially affect your rights, by sending an email notification at least thirty (30) days before the changes take effect.</p>
+      <p>Your continued use of the Services after the effective date of any modifications constitutes your acceptance of the updated Terms. If you do not agree to the modified Terms, you must stop using the Services and cancel your subscription before the changes take effect.</p>
+    </section>
+
+    <!-- 14 -->
+    <section class="doc-section" id="s14">
+      <h2>14. General Provisions</h2>
+
+      <h3>14.1 Entire Agreement</h3>
+      <p>These Terms, together with the Privacy Policy, any applicable Order Forms, and any other documents expressly incorporated by reference, constitute the entire agreement between you and Orectic regarding the Services and supersede all prior agreements, representations, and understandings. In the event of a conflict between these Terms and an Order Form, the Order Form shall control with respect to the specific subject matter of that Order Form.</p>
+
+      <h3>14.2 Severability</h3>
+      <p>If any provision of these Terms is held to be invalid, illegal, or unenforceable, the remaining provisions shall continue in full force and effect.</p>
+
+      <h3>14.3 Waiver</h3>
+      <p>No waiver of any provision of these Terms shall be effective unless in writing. No failure or delay by either party in exercising any right shall constitute a waiver of that right.</p>
+
+      <h3>14.4 Assignment</h3>
+      <p>You may not assign or transfer these Terms or any rights or obligations hereunder without Orectic's prior written consent. Orectic may assign these Terms to any successor entity in connection with a merger, acquisition, reorganization, or sale of all or substantially all of its assets.</p>
+
+      <h3>14.5 Force Majeure</h3>
+      <p>Neither party shall be liable for any failure or delay in performance caused by circumstances beyond its reasonable control, including but not limited to natural disasters, acts of government, pandemics, internet outages, power failures, or third-party service provider outages. This provision does not excuse your obligation to pay fees that have already accrued.</p>
+
+      <h3>14.6 Independent Contractors</h3>
+      <p>The relationship between Orectic and you is that of independent contractors. Nothing in these Terms creates a partnership, joint venture, employment relationship, or agency relationship between the parties.</p>
+
+      <h3>14.7 Notices</h3>
+      <p>All notices under these Terms shall be in writing and shall be deemed given when: (a) delivered personally; (b) sent by confirmed email; or (c) three (3) business days after being sent by certified mail, return receipt requested. Notices to Orectic shall be sent to <a href="mailto:legal@orectic.ai">legal@orectic.ai</a>. Notices to you shall be sent to the email address associated with your account.</p>
+
+      <h3>14.8 Export Compliance</h3>
+      <p>You agree to comply with all applicable export control laws and regulations. You shall not use the Services in any country or region subject to U.S. economic sanctions or export restrictions.</p>
+    </section>
+
+    <!-- 15 -->
+    <section class="doc-section" id="s15">
+      <h2>15. Contact Information</h2>
+      <p>If you have questions about these Terms, please contact us:</p>
+      <div class="contact-card">
+        <p><strong>Orectic, LLC</strong><br />Austin, Texas</p>
+        <p>Email: <a href="mailto:legal@orectic.ai">legal@orectic.ai</a></p>
+        <p>General inquiries: <a href="mailto:hello@orectic.ai">hello@orectic.ai</a></p>
+        <p>Support: <a href="mailto:support@orectic.ai">support@orectic.ai</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-copy">&copy; 2026 Orectic &middot; orectic.ai &middot; Austin, TX</span>
+  <span class="footer-sep">&middot;</span>
+  <a href="/terms" class="footer-link active">Terms</a>
+  <a href="/privacy" class="footer-link">Privacy</a>
+  <a href="mailto:support@orectic.ai" class="footer-link">Support</a>
+  <span class="footer-sep">&middot;</span>
+  <a href="/" class="footer-link">orectic.ai</a>
+</footer>
+
+<script>
+  // Active TOC highlighting on scroll
+  (function() {
+    const sections = document.querySelectorAll('.doc-section');
+    const links = document.querySelectorAll('#toc-list a');
+    if (!links.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          links.forEach(l => {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -75% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  })();
+</script>
+</body>
+</html>

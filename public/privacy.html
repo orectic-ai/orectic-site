@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Orectic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #08080f;
+      --card: #111122;
+      --t1: #f0ecf7;
+      --t2: #a8a0b8;
+      --t3: #6b6580;
+      --t4: #4a4460;
+      --gold: #d4a853;
+      --gold-dim: rgba(212,168,83,0.12);
+      --gold-border: rgba(212,168,83,0.18);
+      --purple: #6b21a8;
+      --border: rgba(212,168,83,0.08);
+      --border-h: rgba(212,168,83,0.22);
+      --font-d: 'Playfair Display', Georgia, serif;
+      --font-b: 'DM Sans', -apple-system, sans-serif;
+      --font-m: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--t1);
+      font-family: var(--font-b);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,8,15,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(24px, 5vw, 80px);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-logo {
+      font-family: var(--font-d);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--t1);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-family: var(--font-m);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--t3);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--t1); }
+
+    /* ── LAYOUT ── */
+    .page-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 5vw, 80px);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 64px;
+      align-items: start;
+      padding-top: 64px;
+      padding-bottom: 120px;
+    }
+
+    @media (max-width: 768px) {
+      .page-wrapper {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding-top: 0;
+      }
+    }
+
+    /* ── MOBILE TOC DROPDOWN ── */
+    .toc-mobile {
+      display: none;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 16px clamp(24px, 5vw, 80px);
+    }
+
+    @media (max-width: 768px) {
+      .toc-mobile { display: block; }
+    }
+
+    .toc-mobile summary {
+      font-family: var(--font-m);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+      outline: none;
+    }
+
+    .toc-mobile summary::after {
+      content: '▾';
+      transition: transform 0.2s;
+    }
+
+    .toc-mobile[open] summary::after {
+      transform: rotate(180deg);
+    }
+
+    .toc-mobile-list {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .toc-mobile-list a {
+      font-family: var(--font-b);
+      font-size: 13px;
+      color: var(--t2);
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+
+    .toc-mobile-list a:last-child { border-bottom: none; }
+    .toc-mobile-list a:hover { color: var(--gold); }
+
+    /* ── SIDEBAR TOC ── */
+    .toc-sidebar {
+      position: sticky;
+      top: 88px;
+      align-self: start;
+    }
+
+    @media (max-width: 768px) {
+      .toc-sidebar { display: none; }
+    }
+
+    .toc-label {
+      font-family: var(--font-m);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--t4);
+      margin-bottom: 16px;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toc-list a {
+      display: block;
+      font-family: var(--font-b);
+      font-size: 13px;
+      color: var(--t3);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-left: 2px solid transparent;
+      border-radius: 0 4px 4px 0;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+
+    .toc-list a:hover {
+      color: var(--t1);
+      border-left-color: var(--gold-border);
+      background: var(--gold-dim);
+    }
+
+    .toc-list a.active {
+      color: var(--gold);
+      border-left-color: var(--gold);
+      background: var(--gold-dim);
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      min-width: 0;
+      padding-top: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 48px clamp(24px, 5vw, 48px) 80px;
+      }
+    }
+
+    .doc-header {
+      margin-bottom: 56px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc-eyebrow {
+      font-family: var(--font-m);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .doc-title {
+      font-family: var(--font-d);
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--t1);
+      margin-bottom: 20px;
+    }
+
+    .doc-meta {
+      font-family: var(--font-m);
+      font-size: 12px;
+      color: var(--t3);
+      letter-spacing: 0.04em;
+    }
+
+    .doc-meta span {
+      color: var(--t2);
+    }
+
+    /* ── SECTION ── */
+    .doc-section {
+      margin-bottom: 56px;
+      scroll-margin-top: 88px;
+    }
+
+    h2 {
+      font-family: var(--font-d);
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--t1);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-family: var(--font-d);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--t1);
+      margin-top: 32px;
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    p {
+      color: var(--t2);
+      margin-bottom: 16px;
+      line-height: 1.8;
+    }
+
+    ul {
+      list-style: none;
+      margin-bottom: 16px;
+    }
+
+    ul li {
+      position: relative;
+      padding-left: 20px;
+      color: var(--t2);
+      margin-bottom: 10px;
+      line-height: 1.75;
+    }
+
+    ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    strong {
+      color: var(--t1);
+      font-weight: 600;
+    }
+
+    a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    a:hover { opacity: 0.75; }
+
+    /* ── PROVIDER TABLE ── */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 24px 0;
+      border-radius: 8px;
+      border: 1px solid var(--border-h);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead tr {
+      background: var(--card);
+      border-bottom: 1px solid var(--border-h);
+    }
+
+    thead th {
+      font-family: var(--font-m);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 14px 18px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover { background: rgba(212,168,83,0.04); }
+
+    tbody td {
+      padding: 14px 18px;
+      color: var(--t2);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+
+    tbody td:first-child {
+      color: var(--t1);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* ── COOKIES TABLE ── */
+    .cookie-table .ttype {
+      white-space: nowrap;
+      font-weight: 500;
+      color: var(--t1);
+    }
+
+    /* ── CONTACT CARD ── */
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border-h);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-top: 24px;
+    }
+
+    .contact-card p { margin-bottom: 8px; }
+    .contact-card p:last-child { margin-bottom: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px clamp(24px, 5vw, 80px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-family: var(--font-m);
+      font-size: 11px;
+      color: var(--t4);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-sep {
+      color: var(--t4);
+      font-size: 11px;
+    }
+
+    .footer-link {
+      font-family: var(--font-m);
+      font-size: 11px;
+      color: var(--t4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover { color: var(--t2); opacity: 1; }
+    .footer-link.active { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Orectic<span>.</span></a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+  </div>
+</nav>
+
+<!-- MOBILE TOC -->
+<details class="toc-mobile">
+  <summary>Table of Contents</summary>
+  <div class="toc-mobile-list">
+    <a href="#s1">1. Introduction</a>
+    <a href="#s2">2. Information We Collect</a>
+    <a href="#s3">3. How We Use Your Information</a>
+    <a href="#s4">4. Third-Party Service Providers</a>
+    <a href="#s5">5. Data Retention</a>
+    <a href="#s6">6. Data Security</a>
+    <a href="#s7">7. Your Rights</a>
+    <a href="#s8">8. International Data Transfers</a>
+    <a href="#s9">9. Cookies and Tracking Technologies</a>
+    <a href="#s10">10. Children's Privacy</a>
+    <a href="#s11">11. Third-Party Links and Services</a>
+    <a href="#s12">12. Changes to This Privacy Policy</a>
+    <a href="#s13">13. Contact Us</a>
+  </div>
+</details>
+
+<div class="page-wrapper">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="toc-sidebar" aria-label="Table of contents">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-list" id="toc-list">
+      <li><a href="#s1">1. Introduction</a></li>
+      <li><a href="#s2">2. Information We Collect</a></li>
+      <li><a href="#s3">3. How We Use Your Information</a></li>
+      <li><a href="#s4">4. Third-Party Service Providers</a></li>
+      <li><a href="#s5">5. Data Retention</a></li>
+      <li><a href="#s6">6. Data Security</a></li>
+      <li><a href="#s7">7. Your Rights</a></li>
+      <li><a href="#s8">8. International Data Transfers</a></li>
+      <li><a href="#s9">9. Cookies and Tracking Technologies</a></li>
+      <li><a href="#s10">10. Children's Privacy</a></li>
+      <li><a href="#s11">11. Third-Party Links</a></li>
+      <li><a href="#s12">12. Changes to This Policy</a></li>
+      <li><a href="#s13">13. Contact Us</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+
+    <header class="doc-header">
+      <div class="doc-eyebrow">Legal Document</div>
+      <h1 class="doc-title">Privacy Policy</h1>
+      <div class="doc-meta">
+        Orectic, LLC &nbsp;&middot;&nbsp; orectic.ai | app.orectic.ai<br />
+        Effective Date: <span>April 13, 2026</span> &nbsp;&middot;&nbsp; Last Updated: <span>April 13, 2026</span>
+      </div>
+    </header>
+
+    <!-- 1 -->
+    <section class="doc-section" id="s1">
+      <h2>1. Introduction</h2>
+      <p>Orectic, LLC ("Orectic," "we," "us," or "our") is committed to protecting the privacy and security of your personal information. This Privacy Policy describes how we collect, use, disclose, and safeguard information when you visit our websites at orectic.ai and app.orectic.ai (collectively, the "Services"), use our AI-powered intelligence platform, or otherwise interact with us.</p>
+      <p>By accessing or using our Services, you agree to the collection, use, and disclosure of your information as described in this Privacy Policy. If you do not agree, please do not access or use our Services.</p>
+      <p>Orectic is headquartered in Austin, Texas. This Privacy Policy applies to all users of our Services regardless of location.</p>
+    </section>
+
+    <!-- 2 -->
+    <section class="doc-section" id="s2">
+      <h2>2. Information We Collect</h2>
+
+      <h3>2.1 Information You Provide Directly</h3>
+      <p>We collect information that you voluntarily provide to us, including:</p>
+      <ul>
+        <li><strong>Account Information:</strong> Name, email address, company name, job title, phone number, and password when you create an account on app.orectic.ai.</li>
+        <li><strong>Business Data:</strong> Transcripts, documents, emails, audio files, video files, spreadsheets, PDFs, and other business data that you upload to or connect with the Orectic platform for processing through our intelligence extraction pipeline. This is the core data you provide for the platform to analyze.</li>
+        <li><strong>Payment Information:</strong> Billing address, payment method details, and transaction history. Payment processing is handled by our third-party payment processor. We do not store complete credit card numbers on our servers.</li>
+        <li><strong>Communications:</strong> Information you provide when you contact us for support, provide feedback, or communicate with us through email, chat, or other channels.</li>
+        <li><strong>Intake and Onboarding Data:</strong> Responses to discovery questionnaires, business context forms, and onboarding materials provided during the deployment process.</li>
+      </ul>
+
+      <h3>2.2 Information Collected Automatically</h3>
+      <p>When you access our Services, we automatically collect certain information, including:</p>
+      <ul>
+        <li><strong>Usage Data:</strong> Pages visited, features used, actions taken within the platform, search queries, Oracle interactions, and time spent on various sections of the Services.</li>
+        <li><strong>Device and Browser Information:</strong> IP address, browser type and version, operating system, device type, screen resolution, and language preferences.</li>
+        <li><strong>Log Data:</strong> Server logs that record requests made to our servers, including timestamps, referring URLs, and error information.</li>
+        <li><strong>Cookies and Similar Technologies:</strong> We use cookies, local storage, and similar tracking technologies as described in Section 9.</li>
+      </ul>
+
+      <h3>2.3 Information from Third-Party Integrations</h3>
+      <p>When you connect third-party services to Orectic (such as CRM systems, email providers, calendar services, communication platforms, or financial tools), we access and process data from those services as authorized by you. The types of data accessed depend on the specific integrations you enable and the permissions you grant. We only access data necessary to provide the Services you have requested.</p>
+    </section>
+
+    <!-- 3 -->
+    <section class="doc-section" id="s3">
+      <h2>3. How We Use Your Information</h2>
+      <p>We use the information we collect for the following purposes:</p>
+      <ul>
+        <li><strong>Providing the Services:</strong> Processing your business data through our intelligence extraction pipeline, generating structured intelligence outputs, powering Oracle agent interactions, delivering the Command Center dashboard, and providing the core functionality of the platform.</li>
+        <li><strong>Account Management:</strong> Creating and managing your account, authenticating your identity, and maintaining your subscription.</li>
+        <li><strong>Platform Improvement:</strong> Analyzing usage patterns to improve the performance, reliability, and functionality of our Services. This may include analyzing aggregated, de-identified usage data to understand how the platform is used.</li>
+        <li><strong>Communication:</strong> Sending you service-related notifications, updates, security alerts, and administrative messages. With your consent, sending marketing communications about new features, products, or services.</li>
+        <li><strong>Security:</strong> Detecting, preventing, and responding to fraud, abuse, security incidents, and technical issues.</li>
+        <li><strong>Legal Compliance:</strong> Complying with applicable laws, regulations, legal processes, and governmental requests.</li>
+        <li><strong>Billing and Payments:</strong> Processing payments, managing subscriptions, and providing invoices and receipts.</li>
+      </ul>
+
+      <h3>3.1 How We Handle Your Business Data</h3>
+      <p>Your business data (transcripts, documents, emails, and other files you upload or connect to the platform) is the core asset you entrust to Orectic. We want to be explicit about how we handle it:</p>
+      <ul>
+        <li>Your business data is processed through our extraction pipeline to generate structured intelligence for your use.</li>
+        <li>Your business data is stored in tenant-isolated infrastructure. Each client's data is logically separated from every other client's data.</li>
+        <li>We do not sell your business data to third parties.</li>
+        <li>We do not use your business data to train general-purpose AI models.</li>
+        <li>We do not share your raw business data with other clients.</li>
+        <li>Access to your business data within Orectic is restricted to authorized personnel who need access to provide the Services.</li>
+      </ul>
+
+      <h3>3.2 Cross-Tenant Learning</h3>
+      <p>Orectic may analyze aggregated, de-identified patterns across tenants to improve platform performance, extraction accuracy, and operational intelligence. This analysis operates on statistical patterns and metadata — not on your raw business data. For example, we may analyze aggregated extraction accuracy rates across all tenants to improve our pipeline, but we will never share the specific contents of your transcripts or documents with another client. You may opt out of cross-tenant pattern analysis by contacting us at <a href="mailto:privacy@orectic.ai">privacy@orectic.ai</a>.</p>
+    </section>
+
+    <!-- 4 -->
+    <section class="doc-section" id="s4">
+      <h2>4. Third-Party Service Providers</h2>
+      <p>We share information with third-party service providers who assist us in operating our platform and delivering the Services. These providers process data on our behalf and are contractually obligated to use it only for the purposes we specify.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Purpose</th>
+              <th>Data Processed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cloudflare</td>
+              <td>CDN, DDoS protection, vector storage (Vectorize), object storage (R2)</td>
+              <td>Vector embeddings, pipeline snapshots, web traffic</td>
+            </tr>
+            <tr>
+              <td>Railway</td>
+              <td>Application hosting for pipeline, oracle agent runtime, and knowledge graph API</td>
+              <td>Business data processing, oracle conversations, knowledge graph storage</td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td>AI language model processing (Claude) for intelligence extraction, oracle agent reasoning, and pipeline operations</td>
+              <td>Business data text sent for extraction and classification; oracle queries and responses</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>AI processing (Whisper for audio transcription)</td>
+              <td>Audio files for transcription</td>
+            </tr>
+            <tr>
+              <td>Vercel</td>
+              <td>Website and dashboard hosting (orectic.ai, app.orectic.ai)</td>
+              <td>Web traffic, usage data, cookies</td>
+            </tr>
+            <tr>
+              <td>Clerk</td>
+              <td>Authentication and user management</td>
+              <td>Account credentials, authentication tokens, session data</td>
+            </tr>
+            <tr>
+              <td>Neon</td>
+              <td>Database (PostgreSQL) for application data</td>
+              <td>Account information, platform configuration, structured application data</td>
+            </tr>
+            <tr>
+              <td>Pipedream</td>
+              <td>Third-party tool integration and API connectivity (3,000+ tools)</td>
+              <td>API credentials, tool connection data, action execution payloads</td>
+            </tr>
+            <tr>
+              <td>Stripe</td>
+              <td>Payment processing</td>
+              <td>Payment method details, billing address, transaction records</td>
+            </tr>
+            <tr>
+              <td>Telegram</td>
+              <td>Oracle agent delivery channel</td>
+              <td>Oracle queries and responses transmitted through Telegram's messaging infrastructure</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>We may update this list as we add or change service providers. We evaluate all third-party providers for their privacy and security practices before engaging them.</p>
+      <p>Each of these providers maintains their own privacy policies that govern their handling of data. We encourage you to review the privacy policies of these providers, particularly Anthropic and OpenAI, as your business data is processed through their AI models during extraction and Oracle operations.</p>
+    </section>
+
+    <!-- 5 -->
+    <section class="doc-section" id="s5">
+      <h2>5. Data Retention</h2>
+      <p>We retain your information for as long as necessary to provide the Services and fulfill the purposes described in this Privacy Policy, unless a longer retention period is required by law.</p>
+      <ul>
+        <li><strong>Account Data:</strong> Retained for the duration of your active subscription plus 90 days after account closure, unless you request earlier deletion.</li>
+        <li><strong>Business Data:</strong> Retained for the duration of your active subscription. Upon termination of your subscription, your business data will be retained for 30 days to allow for export, after which it will be permanently deleted from our systems, including all extracted intelligence, vector embeddings, and normalized data.</li>
+        <li><strong>Extracted Intelligence:</strong> Structured intelligence generated from your business data (entities, relationships, commitments, opportunities, etc.) is retained for the duration of your subscription and deleted with your business data upon termination.</li>
+        <li><strong>Usage and Log Data:</strong> Retained for up to 12 months for security, debugging, and platform improvement purposes.</li>
+        <li><strong>Payment Records:</strong> Retained for 7 years as required by tax and financial regulations.</li>
+        <li><strong>Communications:</strong> Support communications and correspondence retained for up to 24 months.</li>
+      </ul>
+      <p>You may request deletion of your data at any time by contacting <a href="mailto:privacy@orectic.ai">privacy@orectic.ai</a>. We will process deletion requests within 30 days, subject to any legal retention requirements.</p>
+    </section>
+
+    <!-- 6 -->
+    <section class="doc-section" id="s6">
+      <h2>6. Data Security</h2>
+      <p>We implement and maintain reasonable technical, administrative, and physical safeguards designed to protect your information from unauthorized access, disclosure, alteration, and destruction. These measures include:</p>
+      <ul>
+        <li><strong>Tenant-isolated data architecture:</strong> Each client's data is logically separated using per-tenant storage paths and access controls across our infrastructure (Cloudflare R2, Vectorize, and Railway).</li>
+        <li><strong>Encryption in transit:</strong> All data transmitted between your browser and our servers is encrypted using TLS 1.2 or higher.</li>
+        <li><strong>Encryption at rest:</strong> Data stored on Cloudflare R2 and Neon PostgreSQL is encrypted at rest using AES-256 or equivalent.</li>
+        <li><strong>Authentication:</strong> User authentication is managed through Clerk with industry-standard session management and token handling.</li>
+        <li><strong>Access controls:</strong> Internal access to client data is restricted on a need-to-know basis and logged for audit purposes.</li>
+        <li><strong>Infrastructure security:</strong> Our cloud infrastructure provides built-in DDoS protection, rate limiting, and edge security across all deployment surfaces.</li>
+      </ul>
+      <p>While we strive to protect your information, no method of electronic transmission or storage is 100% secure. We cannot guarantee absolute security. If you have reason to believe your account or data has been compromised, please contact us immediately at <a href="mailto:security@orectic.ai">security@orectic.ai</a>.</p>
+    </section>
+
+    <!-- 7 -->
+    <section class="doc-section" id="s7">
+      <h2>7. Your Rights</h2>
+      <p>Depending on your location and applicable law, you may have certain rights regarding your personal information:</p>
+      <ul>
+        <li><strong>Access:</strong> You have the right to request a copy of the personal information we hold about you.</li>
+        <li><strong>Correction:</strong> You have the right to request correction of inaccurate or incomplete personal information.</li>
+        <li><strong>Deletion:</strong> You have the right to request deletion of your personal information, subject to certain legal exceptions.</li>
+        <li><strong>Data Portability:</strong> You have the right to request your data in a structured, commonly used, machine-readable format. Orectic supports data export from the Command Center dashboard.</li>
+        <li><strong>Opt-Out of Marketing:</strong> You have the right to opt out of marketing communications at any time by using the unsubscribe link in our emails or contacting us.</li>
+        <li><strong>Opt-Out of Cross-Tenant Analysis:</strong> You have the right to opt out of aggregated cross-tenant pattern analysis as described in Section 3.2.</li>
+        <li><strong>Withdraw Consent:</strong> Where we process your information based on consent, you have the right to withdraw that consent at any time.</li>
+      </ul>
+      <p>To exercise any of these rights, please contact us at <a href="mailto:privacy@orectic.ai">privacy@orectic.ai</a>. We will respond to verified requests within 30 days. We may need to verify your identity before processing a request.</p>
+
+      <h3>7.1 Texas Data Privacy and Security Act</h3>
+      <p>If you are a Texas resident, you may have additional rights under the Texas Data Privacy and Security Act (TDPSA), effective July 1, 2024, including the right to know what personal data is collected, the right to delete personal data, the right to correct inaccuracies, the right to data portability, and the right to opt out of the sale of personal data, targeted advertising, and profiling. Orectic does not sell personal data. To exercise your TDPSA rights, contact <a href="mailto:privacy@orectic.ai">privacy@orectic.ai</a>.</p>
+
+      <h3>7.2 California Residents (CCPA/CPRA)</h3>
+      <p>If you are a California resident, you have additional rights under the California Consumer Privacy Act (CCPA) and the California Privacy Rights Act (CPRA), including the right to know what personal information is collected, disclosed, or sold; the right to delete personal information; the right to opt out of the sale or sharing of personal information; and the right to non-discrimination for exercising your privacy rights. Orectic does not sell or share personal information as defined by the CCPA/CPRA. To exercise your rights, contact <a href="mailto:privacy@orectic.ai">privacy@orectic.ai</a>.</p>
+
+      <h3>7.3 European Economic Area, UK, and International Users</h3>
+      <p>If you are located in the European Economic Area (EEA), United Kingdom, or other jurisdictions with data protection laws, you may have additional rights under the General Data Protection Regulation (GDPR) or equivalent legislation. If GDPR applies to your use of our Services, our lawful bases for processing are: (a) performance of a contract (providing the Services you subscribed to); (b) legitimate interests (platform improvement, security); and (c) consent (marketing communications). You have the right to lodge a complaint with your local data protection authority. For data protection inquiries, contact <a href="mailto:privacy@orectic.ai">privacy@orectic.ai</a>.</p>
+    </section>
+
+    <!-- 8 -->
+    <section class="doc-section" id="s8">
+      <h2>8. International Data Transfers</h2>
+      <p>Orectic is based in the United States and our Services are hosted on infrastructure operated by Cloudflare, Vercel, Supabase, and other providers with servers located in the United States and other countries. If you access our Services from outside the United States, your information may be transferred to, stored in, and processed in the United States or other countries where our service providers maintain facilities.</p>
+      <p>By using our Services, you consent to the transfer of your information to the United States and other jurisdictions that may have different data protection laws than your country of residence. We take steps to ensure that your information receives an adequate level of protection in the jurisdictions in which we process it.</p>
+    </section>
+
+    <!-- 9 -->
+    <section class="doc-section" id="s9">
+      <h2>9. Cookies and Tracking Technologies</h2>
+      <p>We use cookies and similar technologies to operate and improve our Services. Cookies are small text files stored on your device by your browser.</p>
+
+      <h3>9.1 Types of Cookies We Use</h3>
+      <div class="table-wrap cookie-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Cookie Type</th>
+              <th>Purpose</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="ttype">Essential / Strictly Necessary</td>
+              <td>Required for the Services to function. Includes authentication tokens, session cookies, and security cookies.</td>
+              <td style="white-space:nowrap">Session or up to 30 days</td>
+            </tr>
+            <tr>
+              <td class="ttype">Functional</td>
+              <td>Remember your preferences and settings (theme, language, dashboard configuration).</td>
+              <td>Up to 12 months</td>
+            </tr>
+            <tr>
+              <td class="ttype">Analytics</td>
+              <td>Help us understand how you use the Services so we can improve them. We use privacy-respecting analytics.</td>
+              <td>Up to 12 months</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>We do not use advertising cookies or third-party tracking cookies for targeted advertising. We do not participate in ad networks or sell data to advertisers.</p>
+
+      <h3>9.2 Managing Cookies</h3>
+      <p>You can control cookies through your browser settings. Most browsers allow you to refuse or delete cookies. Please note that disabling essential cookies may prevent you from using certain features of the Services. For instructions on managing cookies, refer to your browser's help documentation.</p>
+    </section>
+
+    <!-- 10 -->
+    <section class="doc-section" id="s10">
+      <h2>10. Children's Privacy</h2>
+      <p>Our Services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children. If you are a parent or guardian and believe your child has provided us with personal information, please contact us at <a href="mailto:privacy@orectic.ai">privacy@orectic.ai</a> and we will take steps to delete such information.</p>
+    </section>
+
+    <!-- 11 -->
+    <section class="doc-section" id="s11">
+      <h2>11. Third-Party Links and Services</h2>
+      <p>Our Services may contain links to third-party websites, services, or applications that are not operated by us. This Privacy Policy does not apply to those third-party services. We encourage you to review the privacy policies of any third-party services you access through our platform. We are not responsible for the privacy practices of third parties.</p>
+    </section>
+
+    <!-- 12 -->
+    <section class="doc-section" id="s12">
+      <h2>12. Changes to This Privacy Policy</h2>
+      <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors. When we make material changes, we will notify you by posting the updated policy on our websites with a revised "Last Updated" date, and where required by law, by sending you an email notification.</p>
+      <p>We encourage you to review this Privacy Policy periodically. Your continued use of the Services after any changes indicates your acceptance of the updated Privacy Policy.</p>
+    </section>
+
+    <!-- 13 -->
+    <section class="doc-section" id="s13">
+      <h2>13. Contact Us</h2>
+      <p>If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
+      <div class="contact-card">
+        <p><strong>Orectic, LLC</strong><br />Attn: Privacy<br />Austin, Texas</p>
+        <p>Email: <a href="mailto:privacy@orectic.ai">privacy@orectic.ai</a></p>
+        <p>For data security incidents: <a href="mailto:security@orectic.ai">security@orectic.ai</a></p>
+        <p>For general inquiries: <a href="mailto:hello@orectic.ai">hello@orectic.ai</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-copy">&copy; 2026 Orectic &middot; orectic.ai &middot; Austin, TX</span>
+  <span class="footer-sep">&middot;</span>
+  <a href="/terms" class="footer-link">Terms</a>
+  <a href="/privacy" class="footer-link active">Privacy</a>
+  <a href="mailto:support@orectic.ai" class="footer-link">Support</a>
+  <span class="footer-sep">&middot;</span>
+  <a href="/" class="footer-link">orectic.ai</a>
+</footer>
+
+<script>
+  // Active TOC highlighting on scroll
+  (function() {
+    const sections = document.querySelectorAll('.doc-section');
+    const links = document.querySelectorAll('#toc-list a');
+    if (!links.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          links.forEach(l => {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -75% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  })();
+</script>
+</body>
+</html>
