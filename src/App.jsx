@@ -529,7 +529,7 @@ function Hero() {
           {/* Stats bar */}
           <div style={{ display: "flex", gap: "clamp(28px, 4vw, 56px)", marginTop: 72, flexWrap: "wrap", ...anim(0.85) }}>
             {[
-              ["3,000+", "tool integrations"],
+              ["52,000+", "tools across 300+ platforms"],
               ["~3 min", "to first conversation"],
               ["Free", "to start"],
             ].map(([num, label], i) => (
@@ -675,7 +675,7 @@ function HowItWorks() {
     {
       num: "01",
       name: "Connect your tools",
-      desc: "Google SSO. 3,000+ integrations via Pipedream. Two minutes to connect everything.",
+      desc: "Google SSO. 52,000+ tools across 300+ platforms. Two minutes to connect everything.",
       icon: "\u25CE",
     },
     {
@@ -1599,7 +1599,7 @@ function Pricing() {
 
   const faqs = [
     ["How quickly does oracle go live?", "Minutes. Sign in, connect your tools, and oracle has live access to your business data immediately via API. The knowledge graph builds in the background over the first seven days \u2014 running overnight experiments, getting smarter with every conversation. By day seven, oracle is at full power."],
-    ["What tools does oracle connect to?", "3,000+ tools via Pipedream: Gmail, Calendar, Slack, QuickBooks, Stripe, HubSpot, Notion, Google Drive, Salesforce, Jira, Asana, and thousands more. If you use it, oracle connects to it."],
+    ["What tools does oracle connect to?", "52,000+ tools across 300+ platforms: Gmail, Calendar, Slack, QuickBooks, Stripe, HubSpot, Notion, Google Drive, Salesforce, Jira, Asana, and hundreds more. Built for agents, not retrofitted from human workflows. If you use it, oracle connects to it."],
     ["Do I need to change my workflow?", "No. oracle works inside the tools you already use. It reads from them, writes to them, and acts through them. You don't adapt to oracle \u2014 oracle adapts to you."],
     ["What does 'governed' mean?", "Every action oracle takes is logged, cited, and controlled. On Starter, oracle proposes actions before executing. On Growth+, the full 12-agent governance suite reviews every decision. You always have an audit trail."],
     ["How is this different from ChatGPT, Zapier, or Viktor?", "ChatGPT gives you text. Zapier follows rules you write. Viktor lives in Slack. oracle connects to all your tools, reads your entire business history, cross-references everything, and does actual work \u2014 governed, cited, and grounded in your data."],
@@ -1776,7 +1776,7 @@ function Integrations() {
     { name: "Shopify", logo: TOOL_LOGOS.Shopify },
     { name: "GitHub", logo: TOOL_LOGOS.GitHub },
     { name: "Airtable", logo: TOOL_LOGOS.Airtable },
-    { name: "3,000+ more", logo: null },
+    { name: "300+ more", logo: null },
   ];
 
   // Double the array for seamless loop
@@ -1797,7 +1797,7 @@ function Integrations() {
             oracle connects to everything you use.
           </h2>
           <p style={{ fontFamily: FONT.b, fontSize: 17, color: C.t2, marginBottom: 48 }}>
-            3,000+ tools via Pipedream. If your team uses it, oracle already works with it.
+            52,000+ tools across 300+ platforms. Built for agents from day one — not retrofitted from human workflows. If your team uses it, oracle already works with it.
           </p>
         </Reveal>
       </div>
