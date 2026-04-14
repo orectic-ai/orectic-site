@@ -57,7 +57,7 @@ const TOOL_LOGOS = {
   Zoom: "https://cdn.simpleicons.org/zoom/0B5CFF",
   Loom: "https://cdn.simpleicons.org/loom/625DF5",
   Dropbox: "https://cdn.simpleicons.org/dropbox/0061FF",
-  Teams: "https://cdn.simpleicons.org/microsoft/5E5E5E",
+  Teams: "https://cdn.simpleicons.org/microsoftteams/6264A7",
   Telegram: "https://cdn.simpleicons.org/telegram/26A5E4",
   Figma: "https://cdn.simpleicons.org/figma/F24E1E",
   Jira: "https://cdn.simpleicons.org/jira/0052CC",
@@ -675,19 +675,19 @@ function HowItWorks() {
     {
       num: "01",
       name: "Connect your tools",
-      desc: "Google SSO. 52,000+ tools across 300+ platforms. Two minutes to connect everything.",
+      desc: "Sign in. Connect your tools. oracle has live access in minutes.",
       icon: "\u25CE",
     },
     {
       num: "02",
-      name: "oracle processes your data",
-      desc: "500 files free. Your first briefing arrives in 30 minutes \u2014 not a demo, your actual intelligence.",
+      name: "oracle builds your graph",
+      desc: "Your data becomes a cross-referenced knowledge graph — people, commitments, opportunities, relationships.",
       icon: "\u2295",
     },
     {
       num: "03",
       name: "oracle starts working",
-      desc: "Reads, writes, and acts across your tools. Every action governed, every claim cited, every insight grounded in your data.",
+      desc: "Ask anything. Delegate tasks. The more you use it, the sharper it gets.",
       icon: "\u25C8",
     },
   ];
@@ -757,195 +757,239 @@ function HowItWorks() {
    ═══════════════════════════════════════════ */
 function OracleDemo() {
   const [step, setStep] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(true);
   const [typedText, setTypedText] = useState("");
-  const [showDiscrepancy, setShowDiscrepancy] = useState(false);
+  const [pdfOpen, setPdfOpen] = useState(false);
+  const [emailVisible, setEmailVisible] = useState(false);
 
-  const oracleThinkingText = "Reviewing 23 sources across email, Slack, and documents for Redline Health...";
-  const oraclePrefaceText = "Prep brief ready. But I found something first:";
+  // Auto-open PDF when prep brief appears (step 3), show email when actions complete (step 7)
+  useEffect(() => {
+    if (step >= 3 && !pdfOpen) setPdfOpen(true);
+  }, [step]);
+  useEffect(() => {
+    if (step >= 7) setEmailVisible(true);
+  }, [step]);
+
+  // Multi-turn conversation script
+  const conversation = [
+    // Step 1: User asks
+    { type: "user", text: "Prep me for the Redline Health call tomorrow at 2pm." },
+    // Step 2: Oracle thinking (orb pulses)
+    { type: "thinking", status: "Reviewing 23 sources across email, Slack, and your proposal docs..." },
+    // Step 3: Oracle delivers the prep brief
+    { type: "oracle", text: "Prep brief ready.", detail: {
+      tag: "PREP BRIEF",
+      lines: [
+        { label: "\uD83D\uDCC4 PDF", text: "Redline_Health_Call_Prep_Apr15.pdf", isLink: true },
+        { label: "Key contacts", text: "Marcus Chen (VP Ops), Sarah Lin (Procurement), David Park (CFO \u2014 new, started Oct 1)" },
+        { label: "Last touchpoint", text: "Oct 24 \u2014 SOW signed. No communication since. 174 days of silence." },
+        { label: "Open items", text: "Q1 usage review never happened. They may ask about it." },
+      ],
+      sources: "23 sources reviewed \u00b7 6 documents \u00b7 14 emails \u00b7 3 Slack threads",
+    }},
+    // Step 4: Oracle follows up with the discrepancy (unprompted)
+    { type: "oracle", text: "One more thing. I found a pricing discrepancy you should know about before the call.", detail: {
+      tag: "DISCREPANCY DETECTED",
+      lines: [
+        { label: "Proposal (Oct 12)", text: "You quoted Redline $4,200/mo." },
+        { label: "Slack with Marcus (Oct 19)", text: "You mentioned $3,800/mo as the \"agreed number.\"" },
+        { label: "Signed SOW (Oct 24)", text: "$4,200. Redline may bring up $3,800 on the call." },
+      ],
+      sources: "3 sources cross-referenced \u00b7 Confidence: high",
+    }},
+    // Step 5: User follow-up
+    { type: "user", text: "Draft a response if they push back on pricing. And update the CRM with the correct number." },
+    // Step 6: Oracle thinking again
+    { type: "thinking", status: "Drafting email response and updating HubSpot..." },
+    // Step 7: Oracle executes
+    { type: "oracle", text: "Done. Two actions taken:", detail: {
+      tag: "ACTIONS COMPLETED",
+      lines: [
+        { label: "Email draft", text: "Response saved in Gmail drafts. References the signed SOW at $4,200 and offers a one-time 5% volume discount as a goodwill gesture." },
+        { label: "CRM updated", text: "HubSpot deal #4281 updated: monthly rate corrected to $4,200, discrepancy note added for the team." },
+      ],
+      sources: "Email draft saved \u00b7 HubSpot updated \u00b7 Awaiting your approval to send",
+    }},
+  ];
 
   const [ref, visible] = useReveal();
+
+  // Typewriter helper
+  function useTypewriter(text, speed, active) {
+    const [typed, setTyped] = useState("");
+    const [done, setDone] = useState(false);
+    useEffect(() => {
+      if (!active) { setTyped(""); setDone(false); return; }
+      let idx = 0;
+      const interval = setInterval(() => {
+        idx++;
+        setTyped(text.slice(0, idx));
+        if (idx >= text.length) { clearInterval(interval); setDone(true); }
+      }, speed);
+      return () => clearInterval(interval);
+    }, [text, speed, active]);
+    return [typed, done];
+  }
+
+  // Step progression
   useEffect(() => {
-    if (visible && step === 0) {
-      setStep(1);
-    }
+    if (visible && step === 0) setStep(1);
   }, [visible]);
 
-  // Autoplay step progression
   useEffect(() => {
-    if (!autoPlay) return;
     if (step === 0) return;
-    if (step === 1) {
-      const timer = setTimeout(() => setStep(2), 1800);
-      return () => clearTimeout(timer);
-    }
-    if (step === 2) {
-      // Start typewriter for thinking text
-      setTypedText("");
-      setShowDiscrepancy(false);
-      let idx = 0;
-      const fullText = oracleThinkingText;
-      const interval = setInterval(() => {
-        idx++;
-        setTypedText(fullText.slice(0, idx));
-        if (idx >= fullText.length) {
-          clearInterval(interval);
-          setTimeout(() => setStep(3), 600);
-        }
-      }, 25);
-      return () => clearInterval(interval);
-    }
-    if (step === 3) {
-      // Typewriter for preface
-      setTypedText("");
-      let idx = 0;
-      const fullText = oraclePrefaceText;
-      const interval = setInterval(() => {
-        idx++;
-        setTypedText(fullText.slice(0, idx));
-        if (idx >= fullText.length) {
-          clearInterval(interval);
-          setTimeout(() => {
-            setShowDiscrepancy(true);
-            setStep(4);
-          }, 400);
-        }
-      }, 30);
-      return () => clearInterval(interval);
-    }
-  }, [step, autoPlay]);
+    const msg = conversation[step - 1];
+    if (!msg) return;
 
-  // Status icon animation
-  const statusIcon = step < 2 ? "\u23F3" : step < 3 ? "\u{1F914}" : step < 4 ? "\u{1F9E0}" : "\u2705";
-  const statusText = step < 2 ? "oracle is processing..." : step < 3 ? "oracle is thinking..." : step < 4 ? "oracle is cross-referencing..." : "oracle found something.";
+    if (msg.type === "user") {
+      // Show user message, advance quickly
+      const t = setTimeout(() => setStep(step + 1), 1000);
+      return () => clearTimeout(t);
+    }
+    if (msg.type === "thinking") {
+      // Show orb thinking for 3s
+      const t = setTimeout(() => setStep(step + 1), 3000);
+      return () => clearTimeout(t);
+    }
+    if (msg.type === "oracle") {
+      // Oracle response — give time to read, longer for detailed responses
+      if (step < conversation.length) {
+        const hasDetail = !!msg.detail;
+        const t = setTimeout(() => setStep(step + 1), hasDetail ? 5500 : 3000);
+        return () => clearTimeout(t);
+      }
+    }
+  }, [step]);
+
+  // Determine which messages are visible
+  const visibleMessages = conversation.slice(0, step);
+  const currentMsg = conversation[step - 1];
+  const isThinking = currentMsg?.type === "thinking";
 
   return (
     <section style={{
       padding: "clamp(80px, 10vw, 140px) clamp(24px, 5vw, 120px)",
       background: `linear-gradient(180deg, ${C.bg} 0%, ${C.bg2} 50%, ${C.bg} 100%)`,
     }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <Reveal><Label>oracle in action</Label></Reveal>
         <Reveal delay={0.1}>
           <h2 style={{
             fontFamily: FONT.d, fontSize: "clamp(30px, 3.5vw, 48px)", fontWeight: 400,
             color: C.t1, lineHeight: 1.15, marginBottom: 16,
           }}>
-            Not a search engine.{" "}
-            <span style={{ color: C.g400, fontStyle: "italic" }}>A co-worker.</span>
+            This is what a workflow{" "}
+            <span style={{ color: C.g400, fontStyle: "italic" }}>actually looks like.</span>
           </h2>
           <p style={{ fontFamily: FONT.b, fontSize: 16, color: C.t3, marginBottom: 48 }}>
-            Watch oracle catch a discrepancy your team missed.
+            One conversation. Cross-referenced intelligence. Real actions taken.
           </p>
         </Reveal>
 
         <Reveal delay={0.2}>
+          <div className="demo-split" style={{
+            display: "grid",
+            gridTemplateColumns: pdfOpen ? "1fr 1fr" : "1fr",
+            gap: 20,
+            transition: "grid-template-columns 0.5s cubic-bezier(0.16,1,0.3,1)",
+          }}>
+          {/* Left: conversation */}
           <div ref={ref} style={{
             background: C.card, border: `1px solid ${C.border}`, borderRadius: 16,
-            padding: "clamp(28px, 4vw, 48px)", position: "relative", overflow: "hidden",
+            padding: "clamp(24px, 3vw, 40px)", position: "relative", overflow: "hidden",
+            minHeight: 400,
           }}>
-            {/* Oracle ambient glow */}
+            {/* Ambient glow */}
             <div style={{
               position: "absolute", top: -60, right: -60, width: 200, height: 200,
               background: `radial-gradient(circle, ${C.gGlow} 0%, transparent 70%)`,
               animation: "orbPulse 4s ease-in-out infinite", pointerEvents: "none",
             }} />
 
-            {/* Status bar with animated icon */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 8, marginBottom: 24,
-              padding: "8px 14px", borderRadius: 8, background: C.gMuted,
-              width: "fit-content",
-            }}>
-              <span className="status-icon" style={{ fontSize: 12, display: "inline-block" }}>{statusIcon}</span>
-              <span style={{ fontFamily: FONT.m, fontSize: 11, color: C.t3 }}>
-                {statusText}
-              </span>
-            </div>
-
-            {/* User message */}
-            <div style={{
-              display: "flex", gap: 14, marginBottom: 24, alignItems: "flex-start",
-              opacity: step >= 1 ? 1 : 0, transform: step >= 1 ? "none" : "translateY(12px)",
-              transition: "all 0.6s cubic-bezier(0.16,1,0.3,1)",
-            }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: 8, flexShrink: 0,
-                background: C.p700, display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: FONT.b, fontSize: 14, fontWeight: 600, color: C.p300, marginTop: 2,
-              }}>Y</div>
-              <div style={{
-                background: "rgba(107,33,168,0.08)", borderRadius: "4px 14px 14px 14px", padding: "14px 20px",
-                fontFamily: FONT.b, fontSize: 15, color: C.t1, lineHeight: 1.6,
-              }}>
-                Prep me for the Redline Health call tomorrow at 2pm.
-              </div>
-            </div>
-
-            {/* Oracle response with typewriter */}
-            <div style={{
-              display: "flex", gap: 14, marginBottom: 24, alignItems: "flex-start",
-              opacity: step >= 2 ? 1 : 0, transform: step >= 2 ? "none" : "translateY(12px)",
-              transition: "all 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s",
-            }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: 8, flexShrink: 0,
-                background: `linear-gradient(135deg, ${C.p500}, ${C.g400})`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: FONT.d, fontSize: 16, fontWeight: 700, color: "#fff", marginTop: 2,
-                animation: "orbPulse 4s ease-in-out infinite",
-              }}>O</div>
-              <div style={{
-                background: C.gMuted, borderRadius: "4px 14px 14px 14px", padding: "18px 22px",
-                fontFamily: FONT.b, fontSize: 14, color: C.t1, lineHeight: 1.8, flex: 1, minWidth: 0,
-              }}>
-                {/* Step 2: typing thinking text */}
-                {step === 2 && (
-                  <span style={{ color: C.t2 }}>{typedText}<span className="cursor-blink">|</span></span>
-                )}
-                {/* Step 3: thinking done, typing preface */}
-                {step === 3 && (
-                  <>
-                    <span style={{ color: C.t2 }}>{oracleThinkingText}</span>
-                    <br /><br />
-                    <span style={{ fontWeight: 600 }}>{typedText}<span className="cursor-blink">|</span></span>
-                  </>
-                )}
-                {/* Step 4: all done, show discrepancy */}
-                {step >= 4 && (
-                  <>
-                    <span style={{ color: C.t2 }}>{oracleThinkingText}</span>
-                    <br /><br />
-                    <span style={{ fontWeight: 600 }}>{oraclePrefaceText}</span>
-                    <br /><br />
+            {/* Conversation messages */}
+            {visibleMessages.map((msg, i) => {
+              if (msg.type === "thinking") return null; // thinking shows as orb below
+              const isUser = msg.type === "user";
+              return (
+                <div key={i} style={{
+                  display: "flex", gap: 12, marginBottom: 20, alignItems: "flex-start",
+                  opacity: 1, animation: "fadeUp 0.5s cubic-bezier(0.16,1,0.3,1)",
+                }}>
+                  {/* Avatar */}
+                  {isUser ? (
                     <div style={{
-                      margin: "12px 0", padding: "14px 18px", borderRadius: 10,
-                      background: "rgba(212,168,83,0.06)", border: `1px solid ${C.borderH}`,
-                      opacity: showDiscrepancy ? 1 : 0,
-                      transform: showDiscrepancy ? "none" : "translateY(8px)",
-                      transition: "all 0.6s cubic-bezier(0.16,1,0.3,1)",
-                    }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                        <span style={{ fontFamily: FONT.m, fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "#e8a040", fontWeight: 600 }}>DISCREPANCY DETECTED</span>
-                      </div>
-                      <p style={{ fontFamily: FONT.b, fontSize: 13, color: C.t2, lineHeight: 1.7 }}>
-                        In your <span style={{ color: C.g400 }}>proposal from Oct 12</span>, you quoted Redline a $4,200/mo rate.
-                        But in the <span style={{ color: C.g400 }}>Slack thread with Marcus (Oct 19)</span>, you mentioned $3,800/mo as the "agreed number."
-                      </p>
-                      <p style={{ fontFamily: FONT.b, fontSize: 13, color: C.t2, lineHeight: 1.7, marginTop: 8 }}>
-                        The signed SOW (Oct 24) says <span style={{ fontWeight: 600, color: C.t1 }}>$4,200</span>. Redline may bring up $3,800 on the call.
-                      </p>
+                      width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                      background: C.p700, display: "flex", alignItems: "center", justifyContent: "center",
+                      fontFamily: FONT.b, fontSize: 13, fontWeight: 600, color: C.p300, marginTop: 2,
+                    }}>Y</div>
+                  ) : (
+                    <div style={{ width: 32, height: 32, flexShrink: 0, marginTop: 2 }}>
+                      <OracleOrbWebGL state="calm" size={32} />
                     </div>
-                    <span style={{ fontFamily: FONT.m, fontSize: 11, color: C.t3 }}>3 sources cross-referenced &middot; 14 related documents reviewed</span>
-                  </>
-                )}
+                  )}
+
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    {/* Message text */}
+                    <div style={{
+                      background: isUser ? "rgba(107,33,168,0.08)" : C.gMuted,
+                      borderRadius: "4px 14px 14px 14px", padding: "12px 18px",
+                      fontFamily: FONT.b, fontSize: 14, color: C.t1, lineHeight: 1.7,
+                    }}>
+                      {msg.text}
+                    </div>
+
+                    {/* Detail card (discrepancy, actions) */}
+                    {msg.detail && (
+                      <div style={{
+                        margin: "10px 0 0", padding: "14px 18px", borderRadius: 10,
+                        background: "rgba(212,168,83,0.04)", border: `1px solid ${C.borderH}`,
+                        animation: "fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s both",
+                      }}>
+                        <div style={{
+                          fontFamily: FONT.m, fontSize: 9, letterSpacing: 2, textTransform: "uppercase",
+                          color: msg.detail.tag.includes("DISCREPANCY") ? "#e8a040" : C.g400,
+                          fontWeight: 600, marginBottom: 10,
+                        }}>{msg.detail.tag}</div>
+
+                        {msg.detail.lines.map((line, j) => (
+                          <div key={j} style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "flex-start" }}>
+                            <span style={{ fontFamily: FONT.m, fontSize: 10, color: C.g400, flexShrink: 0, marginTop: 3, minWidth: 120 }}>{line.label}</span>
+                            <span onClick={line.isLink ? () => setPdfOpen(!pdfOpen) : undefined} style={{ fontFamily: FONT.b, fontSize: 13, color: line.isLink ? C.g400 : C.t2, lineHeight: 1.6, textDecoration: line.isLink ? "underline" : "none", cursor: line.isLink ? "pointer" : "default" }}>{line.text}{line.isLink && " \u2197"}</span>
+                          </div>
+                        ))}
+
+                        <div style={{ fontFamily: FONT.m, fontSize: 10, color: C.t4, marginTop: 8 }}>{msg.detail.sources}</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Oracle thinking indicator — mini orb */}
+            {isThinking && (
+              <div style={{
+                display: "flex", gap: 12, alignItems: "center", marginBottom: 20,
+                animation: "fadeUp 0.4s cubic-bezier(0.16,1,0.3,1)",
+              }}>
+                <div style={{ width: 32, height: 32, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <OracleOrbWebGL state="energy" size={32} />
+                </div>
+                <div style={{
+                  padding: "10px 16px", borderRadius: "4px 14px 14px 14px",
+                  background: C.gMuted, display: "flex", alignItems: "center", gap: 8,
+                }}>
+                  <span style={{ fontFamily: FONT.m, fontSize: 11, color: C.t3, fontStyle: "italic" }}>
+                    {currentMsg.status}
+                  </span>
+                  <span className="cursor-blink" style={{ color: C.g400 }}>|</span>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Replay button */}
-            {step >= 4 && (
+            {step > conversation.length && (
               <button
-                onClick={() => { setAutoPlay(true); setStep(0); setTypedText(""); setShowDiscrepancy(false); setTimeout(() => setStep(1), 400); }}
+                onClick={() => { setStep(0); setTimeout(() => setStep(1), 400); }}
                 style={{
                   background: "none", border: `1px solid ${C.border}`, borderRadius: 6,
                   padding: "8px 16px", cursor: "pointer", fontFamily: FONT.m, fontSize: 11,
@@ -956,6 +1000,126 @@ function OracleDemo() {
                 onMouseLeave={e => { e.target.style.borderColor = C.border; e.target.style.color = C.t3; }}
               >REPLAY</button>
             )}
+          </div>
+
+          {/* Right: Artifact panel — PDF + email draft stack */}
+          {pdfOpen && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {/* PDF preview */}
+              <div style={{
+                background: C.card, border: `1px solid ${C.border}`, borderRadius: 16,
+                padding: "28px 24px", position: "relative", overflow: "hidden",
+                animation: "fadeUp 0.5s cubic-bezier(0.16,1,0.3,1)",
+              }}>
+                {/* PDF header */}
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: 8, background: "rgba(212,168,83,0.1)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontFamily: FONT.m, fontSize: 10, color: C.g400, fontWeight: 600,
+                  }}>PDF</div>
+                  <div>
+                    <div style={{ fontFamily: FONT.b, fontSize: 13, fontWeight: 600, color: C.t1 }}>Redline_Health_Call_Prep_Apr15.pdf</div>
+                    <div style={{ fontFamily: FONT.m, fontSize: 9, color: C.t4 }}>Generated by oracle &middot; 23 sources</div>
+                  </div>
+                </div>
+
+                <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 16 }}>
+                  <h3 style={{ fontFamily: FONT.d, fontSize: 18, color: C.g400, marginBottom: 12, fontWeight: 500 }}>Call Prep: Redline Health</h3>
+                  <p style={{ fontFamily: FONT.m, fontSize: 9, color: C.t4, marginBottom: 16, letterSpacing: 1 }}>APRIL 15, 2026 &middot; 2:00 PM CT &middot; ZOOM</p>
+
+                  <div style={{ marginBottom: 16 }}>
+                    <h4 style={{ fontFamily: FONT.m, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", color: C.g400, marginBottom: 6 }}>Attendees</h4>
+                    <div style={{ fontFamily: FONT.b, fontSize: 12, color: C.t2, lineHeight: 1.7 }}>
+                      Marcus Chen &mdash; VP Operations<br />
+                      Sarah Lin &mdash; Procurement<br />
+                      David Park &mdash; CFO <span style={{ color: C.p300, fontFamily: FONT.m, fontSize: 9 }}>NEW</span>
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: 16 }}>
+                    <h4 style={{ fontFamily: FONT.m, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", color: C.g400, marginBottom: 6 }}>Open Items</h4>
+                    <ul style={{ fontFamily: FONT.b, fontSize: 12, color: C.t2, lineHeight: 1.7, paddingLeft: 16, margin: 0 }}>
+                      <li>Q1 usage review &mdash; never conducted</li>
+                      <li>Pricing discrepancy &mdash; $4,200 vs $3,800</li>
+                      <li>New CFO &mdash; may renegotiate</li>
+                      <li>Salesforce integration request (Feb)</li>
+                    </ul>
+                  </div>
+
+                  <div style={{ marginBottom: 16 }}>
+                    <h4 style={{ fontFamily: FONT.m, fontSize: 9, letterSpacing: 2, textTransform: "uppercase", color: C.g400, marginBottom: 6 }}>Talking Points</h4>
+                    <ol style={{ fontFamily: FONT.b, fontSize: 12, color: C.t2, lineHeight: 1.7, paddingLeft: 16, margin: 0 }}>
+                      <li>Acknowledge the communication gap</li>
+                      <li>Lead with Q1 usage data &mdash; show value first</li>
+                      <li>Introduce yourself to David Park</li>
+                      <li>Address Salesforce request with timeline</li>
+                      <li>Reference signed SOW if pricing comes up</li>
+                    </ol>
+                  </div>
+
+                  <div style={{ padding: "8px 12px", borderRadius: 6, background: C.gMuted }}>
+                    <p style={{ fontFamily: FONT.m, fontSize: 9, color: C.t4, margin: 0 }}>
+                      6 docs &middot; 14 emails &middot; 3 Slack threads &middot; 1 SOW &middot; HubSpot #4281
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Email draft — appears when oracle completes the action */}
+              {emailVisible && (
+                <div style={{
+                  background: C.card, border: `1px solid ${C.border}`, borderRadius: 16,
+                  padding: "28px 24px", position: "relative", overflow: "hidden",
+                  animation: "fadeUp 0.5s cubic-bezier(0.16,1,0.3,1)",
+                }}>
+                  {/* Email header */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                    <div style={{
+                      width: 32, height: 32, borderRadius: 8, background: "rgba(234,67,53,0.1)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      <img src="https://cdn.simpleicons.org/gmail/EA4335" alt="Gmail" width={16} height={16} />
+                    </div>
+                    <div>
+                      <div style={{ fontFamily: FONT.b, fontSize: 13, fontWeight: 600, color: C.t1 }}>Draft &mdash; Gmail</div>
+                      <div style={{ fontFamily: FONT.m, fontSize: 9, color: C.t4 }}>Awaiting your approval to send</div>
+                    </div>
+                    <div style={{
+                      marginLeft: "auto", padding: "4px 10px", borderRadius: 4,
+                      background: "rgba(212,168,83,0.15)", fontFamily: FONT.m, fontSize: 9,
+                      color: C.g400, fontWeight: 600, letterSpacing: 1,
+                    }}>DRAFT</div>
+                  </div>
+
+                  <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 16 }}>
+                    <div style={{ marginBottom: 12 }}>
+                      <span style={{ fontFamily: FONT.m, fontSize: 10, color: C.t4 }}>To: </span>
+                      <span style={{ fontFamily: FONT.b, fontSize: 12, color: C.t2 }}>marcus.chen@redlinehealth.com</span>
+                    </div>
+                    <div style={{ marginBottom: 16 }}>
+                      <span style={{ fontFamily: FONT.m, fontSize: 10, color: C.t4 }}>Subject: </span>
+                      <span style={{ fontFamily: FONT.b, fontSize: 12, color: C.t1 }}>Re: Partnership Pricing &mdash; Quick Clarification</span>
+                    </div>
+
+                    <div style={{ fontFamily: FONT.b, fontSize: 12, color: C.t2, lineHeight: 1.8 }}>
+                      <p>Hi Marcus,</p>
+                      <p style={{ marginTop: 8 }}>
+                        Looking forward to our call tomorrow. Wanted to proactively address something &mdash; I noticed a discrepancy between our earlier Slack discussion ($3,800) and the signed SOW ($4,200).
+                      </p>
+                      <p style={{ marginTop: 8 }}>
+                        The SOW rate of <span style={{ fontWeight: 600, color: C.t1 }}>$4,200/mo</span> is the agreed contractual rate. That said, as a gesture of goodwill and to acknowledge the gap in our Q1 check-in, I'd like to offer a <span style={{ fontWeight: 600, color: C.g400 }}>one-time 5% volume discount</span> on your next quarter if you're open to extending.
+                      </p>
+                      <p style={{ marginTop: 8 }}>
+                        Happy to discuss further tomorrow. Also looking forward to introducing myself to David.
+                      </p>
+                      <p style={{ marginTop: 12, color: C.t3 }}>Best,<br />You</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
           </div>
         </Reveal>
       </div>
@@ -1229,8 +1393,8 @@ function KnowledgeGraphSection() {
                     desc: "Calls, emails, documents, Slack, CRM, invoices — oracle doesn't just store them. It maps the relationships between them. A name in a transcript links to a deal in your CRM, a commitment in an email, and a follow-up that never happened.",
                   },
                   {
-                    headline: "It gets smarter every day.",
-                    desc: "Every conversation you have, every file you upload, every tool you connect deepens the graph. By day seven, oracle knows your business better than any new hire could learn it in six months.",
+                    headline: "It learns how you work.",
+                    desc: "Every conversation you have, every correction you make, every decision you approve teaches oracle what matters to your business. It doesn't just store context — it reasons over it. The more you use it, the sharper it gets.",
                   },
                   {
                     headline: "Cross-referencing, not search.",
@@ -1264,6 +1428,16 @@ function KnowledgeGraphSection() {
             </Reveal>
           </div>
         </div>
+
+        {/* Mid-page CTA */}
+        <Reveal delay={0.35}>
+          <div style={{ textAlign: "center", marginTop: 56 }}>
+            <Btn href={APP}>Get Started Free</Btn>
+            <p style={{ fontFamily: FONT.m, fontSize: 11, color: C.t4, marginTop: 14 }}>
+              No credit card. Connect your tools and see what oracle finds.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -1324,23 +1498,9 @@ function UseCases() {
     }
   }, [activeTab]);
 
-  // Auto-rotate every 3 seconds
-  useEffect(() => {
-    autoRotateRef.current = setInterval(() => {
-      setActiveTab(prev => (prev + 1) % tabs.length);
-    }, 3000);
-    return () => clearInterval(autoRotateRef.current);
-  }, [tabs.length]);
-
-  // Pause auto-rotate on manual click, resume after 6s
+  // Manual click only — no auto-rotate
   const handleTabClick = (i) => {
     setActiveTab(i);
-    clearInterval(autoRotateRef.current);
-    autoRotateRef.current = setTimeout(() => {
-      autoRotateRef.current = setInterval(() => {
-        setActiveTab(prev => (prev + 1) % tabs.length);
-      }, 3000);
-    }, 6000);
   };
 
   return (
@@ -1367,11 +1527,13 @@ function UseCases() {
                   ref={el => tabRefs.current[i] = el}
                   onClick={() => handleTabClick(i)}
                   style={{
-                    background: "none", border: "none", cursor: "pointer",
-                    padding: "14px 24px",
-                    fontFamily: FONT.m, fontSize: 11, letterSpacing: 1.5, textTransform: "uppercase",
+                    background: activeTab === i ? "rgba(212,168,83,0.06)" : "none",
+                    border: "none", cursor: "pointer",
+                    padding: "14px 28px",
+                    borderRadius: "8px 8px 0 0",
+                    fontFamily: FONT.b, fontSize: 13, letterSpacing: 0.5,
                     color: activeTab === i ? C.g400 : C.t3,
-                    fontWeight: activeTab === i ? 600 : 400,
+                    fontWeight: activeTab === i ? 600 : 500,
                     transition: "color 0.3s",
                     whiteSpace: "nowrap",
                     position: "relative",
@@ -1529,9 +1691,10 @@ function Pricing() {
       audience: "Anyone curious",
       features: [
         "Unlimited tool connections (read-only)",
-        "500 files processed",
-        "Auto model routing (Haiku + Sonnet)",
-        "Knowledge graph builds in background",
+        "Up to 1 GB of data processed (text, audio, docs \u2014 no images or video)",
+        "Knowledge graph built from your data",
+        "Live tool access via connected accounts",
+        "$100 in credits for oracle queries and tasks",
       ],
       guarantee: "If oracle can't execute at least 3 tasks for you a day, we failed.",
       cta: "Get Started Free",
@@ -1553,7 +1716,7 @@ function Pricing() {
         "Full knowledge graph + entity matching",
       ],
       cta: "Book a Discovery Sprint",
-      ctaPrimary: false,
+      ctaPrimary: true,
       featured: false,
       href: CAL,
     },
@@ -1591,14 +1754,14 @@ function Pricing() {
         "SLA guarantees + quarterly reviews",
       ],
       cta: "Talk to Us",
-      ctaPrimary: false,
+      ctaPrimary: true,
       featured: false,
       href: CAL,
     },
   ];
 
   const faqs = [
-    ["How quickly does oracle go live?", "Minutes. Sign in, connect your tools, and oracle has live access to your business data immediately via API. The knowledge graph builds in the background over the first seven days \u2014 running overnight experiments, getting smarter with every conversation. By day seven, oracle is at full power."],
+    ["How quickly does oracle go live?", "Minutes. Sign in, connect your tools, and oracle has live access to your business data immediately. It starts working right away \u2014 and the more you use it, the better it gets. It learns your preferences, your priorities, how you communicate, and what matters to your business. Every interaction makes oracle more useful."],
     ["What tools does oracle connect to?", "52,000+ tools across 300+ platforms: Gmail, Calendar, Slack, QuickBooks, Stripe, HubSpot, Notion, Google Drive, Salesforce, Jira, Asana, and hundreds more. Built for agents, not retrofitted from human workflows. If you use it, oracle connects to it."],
     ["Do I need to change my workflow?", "No. oracle works inside the tools you already use. It reads from them, writes to them, and acts through them. You don't adapt to oracle \u2014 oracle adapts to you."],
     ["What does 'governed' mean?", "Every action oracle takes is logged, cited, and controlled. On Starter, oracle proposes actions before executing. On Growth+, the full 12-agent governance suite reviews every decision. You always have an audit trail."],
@@ -1851,8 +2014,8 @@ function Integrations() {
 function Platform() {
   const points = [
     {
-      title: "Intelligence that compounds.",
-      body: "Each new source processed deepens cross-references, surfaces patterns across longer timelines, and teaches oracle more about how your business actually operates.",
+      title: "It remembers what you forget.",
+      body: "The commitment you made three months ago. The follow-up that never happened. The pricing you quoted to a client last quarter. oracle doesn't lose context — it builds on it. Every interaction sharpens what it knows about how your business works.",
     },
     {
       title: "Your data. Only your data.",
@@ -1950,7 +2113,7 @@ function FinalCta() {
           <p style={{
             fontFamily: FONT.b, fontSize: 17, lineHeight: 1.75, color: C.t2, marginBottom: 12,
           }}>
-            500 files processed. First briefing in 30 minutes.
+            1 GB of data processed. No credit card required.
           </p>
           <p style={{
             fontFamily: FONT.b, fontSize: 15, lineHeight: 1.75, color: C.t3, marginBottom: 40,
@@ -2097,6 +2260,7 @@ export default function OrecticV5() {
           .hiw-arrow { display: none !important; }
           .uc-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
           .proof-grid { grid-template-columns: 1fr !important; }
+          .demo-split { grid-template-columns: 1fr !important; }
           .kg-visual { grid-template-columns: 1fr !important; }
           .platform-row { grid-template-columns: 1fr !important; }
           .platform-line { display: none !important; }
