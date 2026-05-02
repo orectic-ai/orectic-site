@@ -1,0 +1,42 @@
+schema_version: 1
+generated_at: "2026-04-30"
+repo:
+  name: "orectic-site"
+  github: "orectic-ai/orectic-site"
+  local_path: "/Users/IsaiahZimmerman/projects/orectic/orectic-site"
+  tier: 1
+  classification: "canonical-product"
+  lifecycle: "canonical"
+  visibility: "public"
+  default_branch: "main"
+  observed_branch: "main"
+  observed_head: "ce768a0"
+owner:
+  primary: "@isaiahzimmerman"
+  source: "read-only GitHub user lookup"
+controls:
+  codeowners: ".github/CODEOWNERS"
+  security_policy: "SECURITY.md"
+  dependency_automation: ".github/dependabot.yml"
+  github_settings_changed_in_wave_1: false
+package_managers:
+  - ecosystem: "npm"
+    path: "/"
+  - ecosystem: "github-actions"
+    path: "/"
+risk:
+  data_sensitivity: "public marketing site, public static legal pages, deployment metadata"
+  path_bound_dependencies: true
+  move_policy: "no moves without dependency atlas pre/post comparison"
+protected_paths:
+  - "CLAUDE.md"
+  - ".claude/"
+  - "src/"
+  - "public/"
+  - "index.html"
+  - "active_website_v3.1.md"
+  - "package.json"
+  - "package-lock.json"
+evidence:
+  audit_packet: "/Users/IsaiahZimmerman/Documents/Playground/orectic-audit-artifacts-2026-04-29/"
+  wave_1_register: "/Users/IsaiahZimmerman/Documents/Playground/orectic-audit-artifacts-2026-04-29/09-wave-1-metadata-rollout.md"
