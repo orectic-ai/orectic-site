@@ -1,0 +1,18 @@
+# Orectic public site ownership.
+# Owner handle verified with a read-only GitHub API lookup on 2026-04-30.
+
+* @isaiahzimmerman
+
+/.github/ @isaiahzimmerman
+/CLAUDE.md @isaiahzimmerman
+/README.md @isaiahzimmerman
+/SECURITY.md @isaiahzimmerman
+/orectic.repo.yaml @isaiahzimmerman
+
+/src/ @isaiahzimmerman
+/public/ @isaiahzimmerman
+/active_website_v3.1.md @isaiahzimmerman
+/index.html @isaiahzimmerman
+/package.json @isaiahzimmerman
+/package-lock.json @isaiahzimmerman
+/.claude/ @isaiahzimmerman
