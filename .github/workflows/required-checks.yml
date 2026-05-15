@@ -13,10 +13,10 @@ jobs:
   required-checks-baseline:
     name: Required checks baseline
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v4.2.2
         with:
           fetch-depth: 0
 
@@ -29,6 +29,26 @@ jobs:
           else
             git diff --check
           fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4.4.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Install Playwright Chromium (ephemeral)
+        run: |
+          npm install --no-save playwright@1.50.0
+          npx playwright install --with-deps chromium
+
+      - name: Smoke test SPA mounts content
+        run: npm run smoke
 
       - name: Report gate
         run: echo "Required checks baseline passed."
