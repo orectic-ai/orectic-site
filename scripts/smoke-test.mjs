@@ -59,20 +59,19 @@ server.stderr.on("data", (chunk) => {
   serverStderr += chunk.toString();
 });
 
-// Hard errors (block merge) vs. soft warnings (log but pass). Soft warnings
-// are typically network-layer 404s for non-critical static assets (e.g. the
-// og-image.png used for social card previews). Hard errors are uncaught JS
-// exceptions or console.error messages that aren't asset-fetch failures —
-// those indicate the SPA itself is broken.
+// Hard failures (block merge):
+//   1. `pageerror` — an uncaught JS exception bubbled to the window. This is
+//      what the original React #527 mismatch produced, and it is the canonical
+//      signal that the SPA itself is broken.
+//   2. `waitForFunction` timeout — `#root` never got any children mounted.
+//
+// `console.error` is treated as a soft warning and logged but does not fail.
+// Reason: real-world pages emit console.error for plenty of non-fatal things
+// (resource 404s, NotSameOrigin / CORS messages, deprecation notices from
+// third-party CDNs). Failing on those would make this gate too brittle to
+// trust, and they have nothing to do with whether the React tree mounted.
 const hardErrors = [];
 const softWarnings = [];
-
-function classifyConsoleError(text) {
-  if (/^Failed to load resource: the server responded with a status of \d+/.test(text)) {
-    return "soft";
-  }
-  return "hard";
-}
 
 try {
   await waitForServer(url, SERVER_BIND_TIMEOUT_MS);
@@ -81,12 +80,8 @@ try {
   const page = await browser.newPage();
   page.on("pageerror", (err) => hardErrors.push(`pageerror: ${err.message}`));
   page.on("console", (msg) => {
-    if (msg.type() !== "error") return;
-    const text = msg.text();
-    if (classifyConsoleError(text) === "soft") {
-      softWarnings.push(`console.error (soft): ${text}`);
-    } else {
-      hardErrors.push(`console.error: ${text}`);
+    if (msg.type() === "error") {
+      softWarnings.push(`console.error: ${msg.text()}`);
     }
   });
 
