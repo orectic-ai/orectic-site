@@ -8,6 +8,41 @@ updates:
       time: "13:00"
       timezone: "America/Chicago"
     open-pull-requests-limit: 5
+    groups:
+      # React and react-dom MUST move together — version drift between them
+      # triggers React error #527 at mount and produces a blank white page
+      # (regression on 2026-05-11 when only react was bumped, leaving
+      # react-dom behind).
+      react-toolkit:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      # Vite plugins peer-depend on vite — group so majors land coordinated.
+      vite-toolchain:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+      # ESLint plugins peer-depend on eslint — group so majors land coordinated.
+      eslint-toolchain:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "eslint-plugin-*"
+          - "globals"
+    ignore:
+      # vite 8 + @vitejs/plugin-react 6 must land together; hold majors
+      # until both are compatible with the rest of the toolchain.
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitejs/plugin-react"
+        update-types: ["version-update:semver-major"]
+      # eslint 10 / @eslint/js 10 require coordinated plugin upgrades.
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@eslint/js"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
