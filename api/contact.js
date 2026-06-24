@@ -11,6 +11,7 @@
  *   CONTACT_TO      - destination address (default hello@orectic.ai)
  *   CONTACT_FROM    - verified sender (default Resend onboarding sender)
  */
+/* global process */
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -27,12 +28,37 @@ export default async function handler(req, res) {
     }
   }
 
-  const { name = "", email = "", org = "", role = "", message = "" } = body || {};
+  const {
+    name = "",
+    email = "",
+    org = "",
+    role = "",
+    message = "",
+    website = "", // honeypot
+  } = body || {};
+
+  // Honeypot: humans never see/fill `website`. If it's set, it's a bot —
+  // accept-and-drop so the bot gets a 200 and doesn't retry, but nothing sends.
+  if (typeof website === "string" && website.trim()) {
+    console.log("contact: honeypot triggered, dropping submission");
+    return res.status(200).json({ ok: true, delivered: false });
+  }
 
   if (!name.trim() || !email.trim() || !message.trim()) {
     return res
       .status(400)
       .json({ ok: false, error: "Name, email, and message are required" });
+  }
+
+  // Bound abuse with simple length caps.
+  if (
+    name.length > 200 ||
+    email.length > 200 ||
+    org.length > 200 ||
+    role.length > 200 ||
+    message.length > 5000
+  ) {
+    return res.status(400).json({ ok: false, error: "Input too long" });
   }
 
   // Always log so a submission is never lost — even before delivery is wired.

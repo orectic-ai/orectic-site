@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import OsSite from "./os/OsSite.jsx";
 
 /*
@@ -12,11 +12,22 @@ import OsSite from "./os/OsSite.jsx";
  */
 const LegacyProduct = lazy(() => import("./legacy/LegacyProduct.jsx"));
 
+const TITLES = {
+  "/": "Orectic — The Operating System for Governed Intelligence",
+  "/legacy": "Orectic — Product Preview (legacy)",
+};
+
 export default function App() {
   const path =
     typeof window !== "undefined"
       ? window.location.pathname.replace(/\/+$/, "") || "/"
       : "/";
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.title = TITLES[path] || TITLES["/"];
+    }
+  }, [path]);
 
   if (path === "/legacy") {
     return (

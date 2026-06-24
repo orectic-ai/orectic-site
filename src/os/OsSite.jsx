@@ -12,7 +12,7 @@ const CSS = `
 :root{
   --bg:#05060A; --bg2:#090B11; --panel:#0E1119; --steel:#161B26;
   --cu:#C98B72; --cu2:#A56C57; --sig:#86C7D6;
-  --t1:#EDF0F5; --t2:#9AA3B2; --t3:#5E6677;
+  --t1:#EDF0F5; --t2:#9AA3B2; --t3:#8A92A2;
   --grid:rgba(134,199,214,.06); --line:rgba(154,163,178,.14); --lineH:rgba(201,139,114,.4);
 }
 body{margin:0}
@@ -42,7 +42,25 @@ body{margin:0}
 .os .btn-pri:disabled{opacity:.55;cursor:default}
 .os .btn-gh{color:var(--t1)}
 .os .btn-gh:hover{border-color:var(--sig);color:var(--sig)}
-@media(max-width:760px){.os .links{display:none}}
+
+/* mobile menu */
+.os .menubtn{display:none;background:none;border:1px solid var(--lineH);color:var(--t1);width:42px;height:36px;cursor:pointer;align-items:center;justify-content:center;font-family:'IBM Plex Mono';font-size:16px;line-height:1}
+.os .mobilemenu{display:none}
+@media(max-width:760px){
+  .os .links{display:none}
+  .os .menubtn{display:inline-flex}
+  .os .nav>.btn-pri{display:none}
+  .os .mobilemenu.open{display:block;border-top:1px solid var(--line);background:rgba(5,6,10,.97);backdrop-filter:blur(16px)}
+  .os .mobilemenu a{display:block;padding:15px 30px;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono';font-size:14px;color:var(--t2)}
+  .os .mobilemenu a.cta{color:var(--cu)}
+}
+
+/* skip link */
+.os .skiplink{position:absolute;left:-9999px;top:0;z-index:100;background:var(--cu);color:#0a0807;padding:10px 16px;font-family:'IBM Plex Mono';font-size:12px}
+.os .skiplink:focus{left:12px;top:12px}
+
+/* honeypot (spam trap) */
+.os .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 .os .hero{position:relative;padding:158px 0 96px}
 .os .coord{position:absolute;top:120px;left:30px;font-family:'IBM Plex Mono';font-size:11px;color:var(--t3);letter-spacing:.1em}
@@ -129,10 +147,19 @@ body{margin:0}
 
 .os .reveal{opacity:0;transform:translateY(20px);transition:.85s cubic-bezier(.16,1,.3,1)}
 .os .reveal.in{opacity:1;transform:none}
+
+@media(max-width:600px){ .os .coord{display:none} .os .hero{padding:140px 0 80px} }
+
+@media (prefers-reduced-motion: reduce){
+  .os .reveal{opacity:1 !important;transform:none !important}
+  .os *,.os *::before,.os *::after{transition-duration:.001ms !important;animation-duration:.001ms !important;scroll-behavior:auto !important}
+}
 `;
 
 export default function OsSite() {
   const [form, setForm] = useState({ name: "", email: "", org: "", role: "", message: "" });
+  const [hp, setHp] = useState(""); // honeypot — humans never fill this
+  const [menuOpen, setMenuOpen] = useState(false);
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
 
   useEffect(() => {
@@ -140,21 +167,35 @@ export default function OsSite() {
     const onScroll = () => nav && nav.classList.toggle("scr", window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
 
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            io.unobserve(e.target);
-          }
-        }),
-      { threshold: 0.12 }
-    );
-    document.querySelectorAll(".os .reveal").forEach((el) => io.observe(el));
+    const reveals = document.querySelectorAll(".os .reveal");
+    const revealAll = () => reveals.forEach((el) => el.classList.add("in"));
+    const reduce =
+      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let io;
+    if (reduce || !("IntersectionObserver" in window)) {
+      // Reduced-motion users (or no observer support) get content immediately, no animation.
+      revealAll();
+    } else {
+      io = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          }),
+        { threshold: 0.12 }
+      );
+      reveals.forEach((el) => io.observe(el));
+    }
+    // Safety net: never leave content hidden if the observer never fires.
+    const backstop = window.setTimeout(revealAll, 1600);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      io.disconnect();
+      window.clearTimeout(backstop);
+      if (io) io.disconnect();
     };
   }, []);
 
@@ -175,7 +216,7 @@ export default function OsSite() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, website: hp }),
       });
       if (!res.ok) throw new Error(`Contact endpoint returned ${res.status}`);
       setStatus("sent");
@@ -188,14 +229,18 @@ export default function OsSite() {
     }
   };
 
+  const ovaeExtra = { target: "_blank", rel: "noopener noreferrer" };
+
   return (
     <div className="os">
       <style>{CSS}</style>
 
-      <nav id="os-nav">
+      <a className="skiplink" href="#system">Skip to content</a>
+
+      <nav id="os-nav" aria-label="Primary">
         <div className="wrap nav">
           <div className="brand">
-            <span className="logo">O</span> ORECTIC
+            <span className="logo" aria-hidden="true">O</span> ORECTIC
           </div>
           <div className="links">
             <a href="#system">/system</a>
@@ -206,6 +251,25 @@ export default function OsSite() {
           <a className="btn btn-pri" href="#contact">
             Request access
           </a>
+          <button
+            type="button"
+            className="menubtn"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            {menuOpen ? "✕" : "≡"}
+          </button>
+        </div>
+        <div
+          className={"mobilemenu" + (menuOpen ? " open" : "")}
+          onClick={() => setMenuOpen(false)}
+        >
+          <a href="#system">/system</a>
+          <a href="#loop">/loop</a>
+          <a href="#products">/products</a>
+          <a href="#company">/company</a>
+          <a className="cta" href="#contact">Request access →</a>
         </div>
       </nav>
 
@@ -227,7 +291,12 @@ export default function OsSite() {
             <a className="btn btn-pri" href="#contact">
               Request access →
             </a>
-            <a className="btn btn-gh" href={OVAE_URL} target="_blank" rel="noopener noreferrer">
+            <a
+              className="btn btn-gh"
+              href={OVAE_URL}
+              {...ovaeExtra}
+              aria-label="See OVAE, our first product (opens in a new tab)"
+            >
               See OVAE, our first product
             </a>
           </div>
@@ -408,7 +477,12 @@ export default function OsSite() {
                 system that runs it.
               </p>
               <div style={{ marginTop: 26 }}>
-                <a className="btn btn-gh" href={OVAE_URL} target="_blank" rel="noopener noreferrer">
+                <a
+                  className="btn btn-gh"
+                  href={OVAE_URL}
+                  {...ovaeExtra}
+                  aria-label="Visit OVAE (opens in a new tab)"
+                >
                   Visit OVAE →
                 </a>
               </div>
@@ -534,6 +608,18 @@ export default function OsSite() {
                 <label htmlFor="c-msg">Message</label>
                 <textarea id="c-msg" value={form.message} onChange={upd("message")} required />
               </div>
+              {/* Honeypot: hidden from humans; bots that fill it are silently dropped. */}
+              <div className="hp" aria-hidden="true">
+                <label htmlFor="c-website">Leave this field empty</label>
+                <input
+                  id="c-website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={hp}
+                  onChange={(e) => setHp(e.target.value)}
+                />
+              </div>
               <button className="btn btn-pri" type="submit" disabled={status === "sending"}>
                 {status === "sending" ? "Sending…" : "Request access →"}
               </button>
@@ -561,7 +647,7 @@ export default function OsSite() {
         <div className="wrap foot">
           <div>© 2026 ORECTIC · AUSTIN TX</div>
           <div>
-            <a href={OVAE_URL} target="_blank" rel="noopener noreferrer">
+            <a href={OVAE_URL} {...ovaeExtra} aria-label="OVAE (opens in a new tab)">
               OVAE ↗
             </a>{" "}
             · <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> ·{" "}
