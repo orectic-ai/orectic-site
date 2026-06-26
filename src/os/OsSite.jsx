@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 /* ─────────────────────────────────────────────────────────
    ORECTIC — OS / company-vision site  ·  "Blueprint" system
    Dark canvas · blueprint grid · copper + steel · mono labels
+
+   Section spine (EBI R2 — problem → identity → mechanism → product → proof):
+   01 Why now · 02 What Orectic is · 03 The Loop · 04 Products · 05 Proof
+   · 06 Who this is for · 07 Open a channel
    ───────────────────────────────────────────────────────── */
 
 const CONTACT_EMAIL = "hello@orectic.ai";
@@ -70,12 +74,16 @@ body{margin:0}
 .os .cta{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
 .os .specrow{margin-top:58px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line)}
 @media(max-width:760px){.os .specrow{grid-template-columns:1fr}}
-.os .specrow div{padding:20px 22px;border-right:1px solid var(--line)}
-.os .specrow div:last-child{border-right:none}
-.os .specrow .n{font-family:'IBM Plex Mono';font-size:11px;color:var(--t3);letter-spacing:.12em}
+.os .specrow>a{padding:20px 22px;border-right:1px solid var(--line);color:inherit;text-decoration:none;transition:.2s}
+.os .specrow>a:last-child{border-right:none}
+.os .specrow>a:hover{background:rgba(134,199,214,.05)}
+.os .specrow>a:hover .v{color:var(--sig)}
+@media(max-width:760px){.os .specrow>a{border-right:none;border-bottom:1px solid var(--line)}.os .specrow>a:last-child{border-bottom:none}}
+.os .specrow .n{font-family:'IBM Plex Mono';font-size:11px;color:var(--t3);letter-spacing:.12em;display:flex;align-items:center;gap:8px}
+.os .specrow .n:after{content:"↘";color:var(--cu);font-size:10px;opacity:.6}
 .os .specrow .v{font-family:'Space Grotesk';font-size:16px;margin-top:8px;color:var(--t1)}
 
-.os section{position:relative;padding:88px 0;border-top:1px solid var(--line)}
+.os section{position:relative;padding:88px 0;border-top:1px solid var(--line);scroll-margin-top:84px}
 .os .shead{max-width:64ch}
 .os .shead h2{font-size:clamp(27px,3.6vw,42px);margin-top:14px;font-weight:300}
 .os .shead h2 b{font-weight:500;color:var(--cu)}
@@ -127,6 +135,11 @@ body{margin:0}
 .os .about{margin-top:44px;max-width:62ch;color:var(--t2);font-size:16px}
 .os .about b{color:var(--t1);font-weight:400}
 
+/* mid-page CTA band */
+.os .midcta{border-top:1px solid var(--line);background:linear-gradient(180deg,var(--panel),var(--bg))}
+.os .midcta-row{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:38px 0;flex-wrap:wrap}
+.os .midcta-t{font-family:'Space Grotesk';font-size:clamp(18px,2.4vw,24px);font-weight:300;max-width:42ch}
+
 .os .contact{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:46px;align-items:start}
 @media(max-width:820px){.os .contact{grid-template-columns:1fr;gap:32px}}
 .os .contact .intro h2{font-size:clamp(26px,3.4vw,40px);font-weight:300}
@@ -141,7 +154,9 @@ body{margin:0}
 .os .formnote{font-family:'IBM Plex Mono';font-size:11.5px;color:var(--t3);margin-top:12px;line-height:1.6}
 .os .formnote.sent{color:var(--sig)} .os .formnote.err{color:var(--cu)}
 
-.os footer{border-top:1px solid var(--line);padding:36px 0;margin-top:0;color:var(--t3);font-family:'IBM Plex Mono';font-size:12px}
+.os footer{border-top:1px solid var(--line);padding:34px 0 40px;margin-top:0;color:var(--t3);font-family:'IBM Plex Mono';font-size:12px}
+.os .footnav{display:flex;flex-wrap:wrap;gap:22px;padding-bottom:22px;margin-bottom:18px;border-bottom:1px solid var(--line)}
+.os .footnav a:hover{color:var(--sig)}
 .os .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:center}
 .os .foot a:hover{color:var(--sig)}
 
@@ -235,7 +250,7 @@ export default function OsSite() {
     <div className="os">
       <style>{CSS}</style>
 
-      <a className="skiplink" href="#system">Skip to content</a>
+      <a className="skiplink" href="#thesis">Skip to content</a>
 
       <nav id="os-nav" aria-label="Primary">
         <div className="wrap nav">
@@ -243,10 +258,10 @@ export default function OsSite() {
             <span className="logo" aria-hidden="true">O</span> ORECTIC
           </div>
           <div className="links">
+            <a href="#thesis">/why</a>
             <a href="#system">/system</a>
-            <a href="#loop">/loop</a>
             <a href="#products">/products</a>
-            <a href="#company">/company</a>
+            <a href="#proof">/proof</a>
           </div>
           <a className="btn btn-pri" href="#contact">
             Request access
@@ -265,10 +280,10 @@ export default function OsSite() {
           className={"mobilemenu" + (menuOpen ? " open" : "")}
           onClick={() => setMenuOpen(false)}
         >
+          <a href="#thesis">/why</a>
           <a href="#system">/system</a>
-          <a href="#loop">/loop</a>
           <a href="#products">/products</a>
-          <a href="#company">/company</a>
+          <a href="#proof">/proof</a>
           <a className="cta" href="#contact">Request access →</a>
         </div>
       </nav>
@@ -300,68 +315,28 @@ export default function OsSite() {
               See OVAE, our first product
             </a>
           </div>
+          {/* spec-row doubles as a clickable mini-TOC */}
           <div className="specrow">
-            <div>
+            <a href="#system">
               <div className="n mono">LAYER 01</div>
               <div className="v">Orectic · the system</div>
-            </div>
-            <div>
+            </a>
+            <a href="#products">
               <div className="n mono">LAYER 02</div>
               <div className="v">OVAE · the surface</div>
-            </div>
-            <div>
+            </a>
+            <a href="#loop">
               <div className="n mono">CYCLE</div>
               <div className="v">Intent → … → Learning</div>
-            </div>
+            </a>
           </div>
         </div>
       </header>
 
-      <section id="system">
-        <div className="wrap">
-          <div className="shead reveal">
-            <div className="eyebrow">What Orectic is</div>
-            <h2>
-              Not a product. <b>A construct.</b>
-            </h2>
-            <p>
-              Orectic is the company, the methodology, and the operating model — the why and the how
-              that survives any single product. Products are how the doctrine reaches the world.
-            </p>
-          </div>
-          <div className="grid3">
-            <div className="cell reveal">
-              <div className="num mono">01 / DOCTRINE</div>
-              <h3>A doctrine</h3>
-              <p>
-                Implicit expertise can be made explicit through systematic extraction — and explicit
-                expertise can be operationalized through governed agents.
-              </p>
-            </div>
-            <div className="cell reveal">
-              <div className="num mono">02 / MODEL</div>
-              <h3>An operating model</h3>
-              <p>
-                Every action is grounded, cited, and governed. Control by architecture, not policy.
-                Nothing is asserted that cannot be shown.
-              </p>
-            </div>
-            <div className="cell reveal">
-              <div className="num mono">03 / LOOP</div>
-              <h3>A loop</h3>
-              <p>
-                Intent becomes governed execution; execution produces proof; proof becomes learning;
-                learning re-enters as intent.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section id="thesis">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">Why now</div>
+            <div className="eyebrow">01 · Why now</div>
             <h2>
               Every business runs on intelligence <b>it can't reach.</b>
             </h2>
@@ -400,10 +375,48 @@ export default function OsSite() {
         </div>
       </section>
 
+      <section id="system">
+        <div className="wrap">
+          <div className="shead reveal">
+            <div className="eyebrow">02 · What Orectic is</div>
+            <h2>
+              Not a product. <b>A construct.</b>
+            </h2>
+            <p>
+              Orectic is the company, the methodology, and the operating model — the why and the how
+              that survives any single product. Products are how the doctrine reaches the world.
+            </p>
+          </div>
+          <div className="grid3">
+            <div className="cell reveal">
+              <div className="num mono">01 / DOCTRINE</div>
+              <h3>A doctrine</h3>
+              <p>
+                Implicit expertise can be made explicit through systematic extraction — and explicit
+                expertise can be operationalized through governed agents.
+              </p>
+            </div>
+            <div className="cell reveal">
+              <div className="num mono">02 / MODEL</div>
+              <h3>An operating model</h3>
+              <p>
+                A repeatable way to turn expertise into governed software — the model every Orectic
+                product is built on.
+              </p>
+            </div>
+            <div className="cell reveal">
+              <div className="num mono">03 / LOOP</div>
+              <h3>A loop</h3>
+              <p>A self-correcting cycle that compounds with every use — detailed next.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="loop">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">The Loop</div>
+            <div className="eyebrow">03 · The Loop</div>
             <h2>
               One self-correcting cycle, <b>running underneath the work.</b>
             </h2>
@@ -456,7 +469,7 @@ export default function OsSite() {
       <section id="products">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">Products</div>
+            <div className="eyebrow">04 · Products</div>
             <h2>
               OVAE is <b>the first.</b>
             </h2>
@@ -502,7 +515,7 @@ export default function OsSite() {
       <section id="proof">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">How it earns trust</div>
+            <div className="eyebrow">05 · How it earns trust</div>
             <h2>
               Governed by architecture, <b>not by promise.</b>
             </h2>
@@ -540,10 +553,23 @@ export default function OsSite() {
         </div>
       </section>
 
+      <div className="midcta">
+        <div className="wrap">
+          <div className="midcta-row reveal">
+            <div className="midcta-t">
+              Building, backing, or deploying governed intelligence?
+            </div>
+            <a className="btn btn-pri" href="#contact">
+              Request access →
+            </a>
+          </div>
+        </div>
+      </div>
+
       <section id="company">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">Who this is for</div>
+            <div className="eyebrow">06 · Who this is for</div>
             <h2>
               Built with the people <b>building what's next.</b>
             </h2>
@@ -578,7 +604,7 @@ export default function OsSite() {
         <div className="wrap">
           <div className="contact">
             <div className="intro reveal">
-              <div className="eyebrow">Open a channel</div>
+              <div className="eyebrow">07 · Open a channel</div>
               <h2 style={{ marginTop: 14 }}>
                 Let's <b>talk.</b>
               </h2>
@@ -644,14 +670,24 @@ export default function OsSite() {
       </section>
 
       <footer>
-        <div className="wrap foot">
-          <div>© 2026 ORECTIC · AUSTIN TX</div>
-          <div>
-            <a href={OVAE_URL} {...ovaeExtra} aria-label="OVAE (opens in a new tab)">
-              OVAE ↗
-            </a>{" "}
-            · <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> ·{" "}
-            <a href="/legacy">Previous site ↗</a>
+        <div className="wrap">
+          <div className="footnav reveal">
+            <a href="#thesis">Why now</a>
+            <a href="#system">System</a>
+            <a href="#loop">The Loop</a>
+            <a href="#products">Products</a>
+            <a href="#proof">Proof</a>
+            <a href="#contact">Contact</a>
+            <a href={OVAE_URL} {...ovaeExtra} aria-label="OVAE (opens in a new tab)">OVAE ↗</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+          </div>
+          <div className="foot">
+            <div>© 2026 ORECTIC · AUSTIN TX</div>
+            <div>
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> ·{" "}
+              <a href="/legacy">Previous site ↗</a>
+            </div>
           </div>
         </div>
       </footer>
