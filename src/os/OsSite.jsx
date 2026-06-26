@@ -67,7 +67,7 @@ body{margin:0}
 .os .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 .os .hero{position:relative;padding:158px 0 96px}
-.os .coord{position:absolute;top:120px;left:30px;font-family:'IBM Plex Mono';font-size:11px;color:var(--t3);letter-spacing:.1em}
+.os .coord{font-family:'IBM Plex Mono';font-size:11px;color:var(--t3);letter-spacing:.1em;margin-bottom:4px}
 .os .hero h1{font-size:clamp(40px,6.4vw,78px);max-width:17ch;margin:22px 0 0;font-weight:300;letter-spacing:-.025em}
 .os .hero h1 b{font-weight:500;color:var(--cu)}
 .os .lede{margin-top:28px;max-width:62ch;font-size:18px;line-height:1.62;color:var(--t2)}
@@ -328,7 +328,7 @@ export default function OsSite() {
         </svg>
         <div className="wrap">
           <div className="coord mono">ORECTIC · LAYER 01 · OPERATING SYSTEM</div>
-          <div className="eyebrow" style={{ marginTop: 34 }}>
+          <div className="eyebrow" style={{ marginTop: 20 }}>
             Governed intent-to-execution infrastructure
           </div>
           <h1>
