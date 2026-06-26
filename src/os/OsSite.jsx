@@ -68,9 +68,9 @@ body{margin:0}
 
 .os .hero{position:relative;padding:158px 0 96px}
 .os .coord{position:absolute;top:120px;left:30px;font-family:'IBM Plex Mono';font-size:11px;color:var(--t3);letter-spacing:.1em}
-.os .hero h1{font-size:clamp(40px,6.4vw,78px);max-width:17ch;margin:22px 0 0;font-weight:300}
+.os .hero h1{font-size:clamp(40px,6.4vw,78px);max-width:17ch;margin:22px 0 0;font-weight:300;letter-spacing:-.025em}
 .os .hero h1 b{font-weight:500;color:var(--cu)}
-.os .lede{margin-top:28px;max-width:62ch;font-size:18px;color:var(--t2)}
+.os .lede{margin-top:28px;max-width:62ch;font-size:18px;line-height:1.62;color:var(--t2)}
 .os .cta{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
 .os .specrow{margin-top:58px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line)}
 @media(max-width:760px){.os .specrow{grid-template-columns:1fr}}
@@ -162,6 +162,32 @@ body{margin:0}
 
 .os .reveal{opacity:0;transform:translateY(20px);transition:.85s cubic-bezier(.16,1,.3,1)}
 .os .reveal.in{opacity:1;transform:none}
+
+/* EBI R3 — craft */
+.os a:focus-visible,.os button:focus-visible,.os input:focus-visible,.os textarea:focus-visible{outline:2px solid var(--sig);outline-offset:3px}
+.os .btn:hover{transform:translateY(-1px)}
+.os .links a,.os .footnav a{position:relative}
+.os .links a:after,.os .footnav a:after{content:"";position:absolute;left:0;bottom:-4px;height:1px;width:0;background:var(--sig);transition:width .25s ease}
+.os .links a:hover:after,.os .footnav a:hover:after{width:100%}
+/* living FIG.01 loop — a signal pulses around the cycle */
+@keyframes nodePulse{0%,100%{box-shadow:0 0 0 0 rgba(134,199,214,0)}45%{box-shadow:0 0 0 6px rgba(134,199,214,.12)}}
+.os .step .dot{animation:nodePulse 4.5s ease-in-out infinite}
+.os .flow .step:nth-child(1) .dot{animation-delay:0s}
+.os .flow .step:nth-child(3) .dot{animation-delay:.9s}
+.os .flow .step:nth-child(5) .dot{animation-delay:1.8s}
+.os .flow .step:nth-child(7) .dot{animation-delay:2.7s}
+.os .flow .step:nth-child(9) .dot{animation-delay:3.6s}
+/* hero balance glyph */
+.os .heroglyph{position:absolute;top:96px;right:-30px;width:430px;height:430px;opacity:.55;pointer-events:none;z-index:0}
+.os .hero .wrap{position:relative;z-index:1}
+@keyframes glyphspin{to{transform:rotate(360deg)}}
+.os .heroglyph .spin{transform-origin:100px 100px;animation:glyphspin 80s linear infinite}
+@media(max-width:980px){.os .heroglyph{display:none}}
+/* blueprint corner ticks */
+.os .tick{position:relative}
+.os .tick:before,.os .tick:after{content:"";position:absolute;width:11px;height:11px;border-color:var(--cu);border-style:solid;opacity:.55;pointer-events:none}
+.os .tick:before{top:-1px;left:-1px;border-width:1px 0 0 1px}
+.os .tick:after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
 
 @media(max-width:600px){ .os .coord{display:none} .os .hero{padding:140px 0 80px} }
 
@@ -289,6 +315,17 @@ export default function OsSite() {
       </nav>
 
       <header className="hero">
+        <svg className="heroglyph" viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#C98B72" strokeOpacity="0.22" strokeWidth="0.6" />
+          <g className="spin">
+            <circle cx="100" cy="100" r="58" fill="none" stroke="#86C7D6" strokeOpacity="0.16" strokeWidth="0.5" strokeDasharray="2 5" />
+          </g>
+          <circle cx="100" cy="20" r="2.4" fill="#C98B72" />
+          <circle cx="176" cy="76" r="2.4" fill="#C98B72" />
+          <circle cx="146" cy="163" r="2.4" fill="#86C7D6" />
+          <circle cx="54" cy="163" r="2.4" fill="#C98B72" />
+          <circle cx="24" cy="76" r="2.4" fill="#C98B72" />
+        </svg>
         <div className="wrap">
           <div className="coord mono">ORECTIC · LAYER 01 · OPERATING SYSTEM</div>
           <div className="eyebrow" style={{ marginTop: 34 }}>
@@ -319,11 +356,11 @@ export default function OsSite() {
           <div className="specrow">
             <a href="#system">
               <div className="n mono">LAYER 01</div>
-              <div className="v">Orectic · the system</div>
+              <div className="v"><span className="cu">Orectic</span> · the system</div>
             </a>
             <a href="#products">
               <div className="n mono">LAYER 02</div>
-              <div className="v">OVAE · the surface</div>
+              <div className="v"><span className="sig">OVAE</span> · the surface</div>
             </a>
             <a href="#loop">
               <div className="n mono">CYCLE</div>
@@ -421,7 +458,7 @@ export default function OsSite() {
               One self-correcting cycle, <b>running underneath the work.</b>
             </h2>
           </div>
-          <div className="schem reveal">
+          <div className="schem reveal tick">
             <div className="cap mono">FIG.01 — THE ORECTIC LOOP</div>
             <div className="flow">
               <div className="step">
@@ -479,7 +516,7 @@ export default function OsSite() {
             </p>
           </div>
           <div className="prod">
-            <div className="ovae reveal">
+            <div className="ovae reveal tick">
               <span className="tag">LIVE · FIRST PRODUCT</span>
               <h3>
                 OVAE<span className="sig">.ai</span>
@@ -613,7 +650,7 @@ export default function OsSite() {
                 about you and we'll be in touch.
               </p>
             </div>
-            <form className="form reveal" onSubmit={onSubmit}>
+            <form className="form reveal tick" onSubmit={onSubmit}>
               <div className="field">
                 <label htmlFor="c-name">Name</label>
                 <input id="c-name" value={form.name} onChange={upd("name")} required autoComplete="name" />
