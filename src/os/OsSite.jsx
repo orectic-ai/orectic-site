@@ -135,6 +135,25 @@ body{margin:0}
 .os .about{margin-top:44px;max-width:62ch;color:var(--t2);font-size:16px}
 .os .about b{color:var(--t1);font-weight:400}
 
+/* without / with comparison */
+.os .cmp{margin-top:44px;border:1px solid var(--line)}
+.os .cmp-head,.os .cmp-row{display:grid;grid-template-columns:1fr 1fr}
+.os .cmp-head>div{padding:15px 24px;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.os .cmp-head .w0{color:var(--t3);border-right:1px solid var(--line)}
+.os .cmp-head .w1{color:var(--cu)}
+.os .cmp-row{border-top:1px solid var(--line)}
+.os .cmp-row>div{padding:18px 24px;font-size:14.5px;display:flex;gap:11px;align-items:flex-start;line-height:1.5}
+.os .cmp-row .c0{color:var(--t3);border-right:1px solid var(--line)}
+.os .cmp-row .c1{color:var(--t1);transition:background .2s}
+.os .cmp-row .mk{font-family:'IBM Plex Mono';flex:0 0 auto;font-size:13px}
+.os .cmp-row .c0 .mk{color:#A56C57}
+.os .cmp-row .c1 .mk{color:var(--sig)}
+.os .cmp-row:hover .c1{background:rgba(134,199,214,.05)}
+@media(max-width:680px){
+  .os .cmp-head,.os .cmp-row{grid-template-columns:1fr}
+  .os .cmp-head .w0,.os .cmp-row .c0{border-right:none;border-bottom:1px solid var(--line)}
+}
+
 /* mid-page CTA band */
 .os .midcta{border-top:1px solid var(--line);background:linear-gradient(180deg,var(--panel),var(--bg))}
 .os .midcta-row{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:38px 0;flex-wrap:wrap}
@@ -466,10 +485,51 @@ export default function OsSite() {
         </div>
       </section>
 
+      <section id="cost">
+        <div className="wrap">
+          <div className="shead reveal">
+            <div className="eyebrow">02 · The cost of running blind</div>
+            <h2>
+              Without governance, the same failures <b>repeat — silently.</b>
+            </h2>
+            <p>
+              Knowledge stays trapped, the AI guesses, and automation can't be trusted. Governed
+              intelligence flips each of those.
+            </p>
+          </div>
+          <div className="cmp reveal">
+            <div className="cmp-head">
+              <div className="w0">Without governed intelligence</div>
+              <div className="w1">With Orectic</div>
+            </div>
+            <div className="cmp-row">
+              <div className="c0"><span className="mk">✕</span> Expertise lives in people's heads and scattered files.</div>
+              <div className="c1"><span className="mk">✓</span> Implicit expertise extracted into a structured, queryable brain.</div>
+            </div>
+            <div className="cmp-row">
+              <div className="c0"><span className="mk">✕</span> The AI answers from generic, ungrounded guesses.</div>
+              <div className="c1"><span className="mk">✓</span> Every action grounded in your own data, voice, and relationships.</div>
+            </div>
+            <div className="cmp-row">
+              <div className="c0"><span className="mk">✕</span> Automation you can't audit, cite, or trust.</div>
+              <div className="c1"><span className="mk">✓</span> Cited, bounded, auditable execution — governed by architecture.</div>
+            </div>
+            <div className="cmp-row">
+              <div className="c0"><span className="mk">✕</span> Insight stops at the answer; the work stays manual.</div>
+              <div className="c1"><span className="mk">✓</span> Work gets done across the tools you already run on.</div>
+            </div>
+            <div className="cmp-row">
+              <div className="c0"><span className="mk">✕</span> One exit or outage and institutional memory walks out the door.</div>
+              <div className="c1"><span className="mk">✓</span> Memory is operational and owned — it compounds with every use.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="system">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">02 · What Orectic is</div>
+            <div className="eyebrow">03 · What Orectic is</div>
             <h2>
               Not a product. <b>A construct.</b>
             </h2>
@@ -507,7 +567,7 @@ export default function OsSite() {
       <section id="loop">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">03 · The Loop</div>
+            <div className="eyebrow">04 · The Loop</div>
             <h2>
               One self-correcting cycle, <b>running underneath the work.</b>
             </h2>
@@ -560,7 +620,7 @@ export default function OsSite() {
       <section id="products">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">04 · Products</div>
+            <div className="eyebrow">05 · Products</div>
             <h2>
               OVAE is <b>the first.</b>
             </h2>
@@ -606,7 +666,7 @@ export default function OsSite() {
       <section id="proof">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">05 · How it earns trust</div>
+            <div className="eyebrow">06 · How it earns trust</div>
             <h2>
               Governed by architecture, <b>not by promise.</b>
             </h2>
@@ -660,7 +720,7 @@ export default function OsSite() {
       <section id="company">
         <div className="wrap">
           <div className="shead reveal">
-            <div className="eyebrow">06 · Who this is for</div>
+            <div className="eyebrow">07 · Who this is for</div>
             <h2>
               Built with the people <b>building what's next.</b>
             </h2>
@@ -695,7 +755,7 @@ export default function OsSite() {
         <div className="wrap">
           <div className="contact">
             <div className="intro reveal">
-              <div className="eyebrow">07 · Open a channel</div>
+              <div className="eyebrow">08 · Open a channel</div>
               <h2 style={{ marginTop: 14 }}>
                 Let's <b>talk.</b>
               </h2>
