@@ -206,6 +206,14 @@ html{scroll-behavior:smooth}
 .os .ovae{transition:box-shadow .3s}
 .os .ovae:hover{box-shadow:inset 0 0 0 1px rgba(134,199,214,.18)}
 
+/* EBI R5 — innovation */
+.os .heroglyph{transition:transform .25s ease-out}
+.os .heroglyph .orbit{transform-origin:100px 100px;animation:glyphspin 22s linear infinite}
+.os .flow:hover .step,.os .flow:hover .arrow{opacity:.4;transition:opacity .25s}
+.os .flow .step{transition:opacity .25s}
+.os .flow .step:hover{opacity:1}
+.os .flow .step:hover .dot{transform:scale(1.6);filter:drop-shadow(0 0 6px rgba(134,199,214,.55))}
+
 @media(max-width:600px){ .os .coord{display:none} .os .hero{padding:140px 0 80px} }
 
 @media (prefers-reduced-motion: reduce){
@@ -255,6 +263,31 @@ export default function OsSite() {
       window.removeEventListener("scroll", onScroll);
       window.clearTimeout(backstop);
       if (io) io.disconnect();
+    };
+  }, []);
+
+  // Cursor parallax on the hero glyph — subtle depth, pointer devices only.
+  useEffect(() => {
+    const glyph = document.querySelector(".os .heroglyph");
+    if (!glyph) return;
+    const reduce =
+      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    if (reduce || coarse) return;
+    let raf = 0;
+    const onMove = (e) => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        const x = e.clientX / window.innerWidth - 0.5;
+        const y = e.clientY / window.innerHeight - 0.5;
+        glyph.style.transform = `translate(${(x * 20).toFixed(1)}px, ${(y * 16).toFixed(1)}px)`;
+      });
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      if (raf) window.cancelAnimationFrame(raf);
     };
   }, []);
 
@@ -337,6 +370,9 @@ export default function OsSite() {
           <circle cx="100" cy="100" r="80" fill="none" stroke="#C98B72" strokeOpacity="0.22" strokeWidth="0.6" />
           <g className="spin">
             <circle cx="100" cy="100" r="58" fill="none" stroke="#86C7D6" strokeOpacity="0.16" strokeWidth="0.5" strokeDasharray="2 5" />
+          </g>
+          <g className="orbit">
+            <circle cx="100" cy="20" r="3.4" fill="#86C7D6" />
           </g>
           <circle cx="100" cy="20" r="2.4" fill="#C98B72" />
           <circle cx="176" cy="76" r="2.4" fill="#C98B72" />
