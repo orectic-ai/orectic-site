@@ -189,9 +189,27 @@ body{margin:0}
 .os .tick:before{top:-1px;left:-1px;border-width:1px 0 0 1px}
 .os .tick:after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
 
+/* EBI R4 — resonance */
+html{scroll-behavior:smooth}
+.os .hero .coord.reveal{transition-delay:.02s}
+.os .hero .eyebrow.reveal{transition-delay:.10s}
+.os .hero h1.reveal{transition-delay:.18s}
+.os .hero .lede.reveal{transition-delay:.28s}
+.os .hero .cta.reveal{transition-delay:.38s}
+.os .hero .specrow.reveal{transition-delay:.48s}
+.os .grid3 .cell.reveal:nth-child(2){transition-delay:.09s}
+.os .grid3 .cell.reveal:nth-child(3){transition-delay:.18s}
+.os .aud>.reveal:nth-child(2){transition-delay:.07s}
+.os .aud>.reveal:nth-child(3){transition-delay:.14s}
+.os .aud>.reveal:nth-child(4){transition-delay:.21s}
+.os .cell:hover{background:rgba(201,139,114,.05);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.28)}
+.os .ovae{transition:box-shadow .3s}
+.os .ovae:hover{box-shadow:inset 0 0 0 1px rgba(134,199,214,.18)}
+
 @media(max-width:600px){ .os .coord{display:none} .os .hero{padding:140px 0 80px} }
 
 @media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto !important}
   .os .reveal{opacity:1 !important;transform:none !important}
   .os *,.os *::before,.os *::after{transition-duration:.001ms !important;animation-duration:.001ms !important;scroll-behavior:auto !important}
 }
@@ -327,19 +345,19 @@ export default function OsSite() {
           <circle cx="24" cy="76" r="2.4" fill="#C98B72" />
         </svg>
         <div className="wrap">
-          <div className="coord mono">ORECTIC · LAYER 01 · OPERATING SYSTEM</div>
-          <div className="eyebrow" style={{ marginTop: 20 }}>
+          <div className="coord mono reveal">ORECTIC · LAYER 01 · OPERATING SYSTEM</div>
+          <div className="eyebrow reveal" style={{ marginTop: 20 }}>
             Governed intent-to-execution infrastructure
           </div>
-          <h1>
+          <h1 className="reveal">
             The operating system for <b>governed intelligence.</b>
           </h1>
-          <p className="lede">
+          <p className="lede reveal">
             Orectic converts the implicit expertise inside a business into governed, executable
             intelligence — extracted, structured, and acted on through a self-correcting loop. It
             is the infrastructure beneath the product, not the product itself.
           </p>
-          <div className="cta">
+          <div className="cta reveal">
             <a className="btn btn-pri" href="#contact">
               Request access →
             </a>
@@ -353,7 +371,7 @@ export default function OsSite() {
             </a>
           </div>
           {/* spec-row doubles as a clickable mini-TOC */}
-          <div className="specrow">
+          <div className="specrow reveal">
             <a href="#system">
               <div className="n mono">LAYER 01</div>
               <div className="v"><span className="cu">Orectic</span> · the system</div>
@@ -646,8 +664,8 @@ export default function OsSite() {
                 Let's <b>talk.</b>
               </h2>
               <p>
-                If you're building, backing, or deploying governed intelligence, tell us a little
-                about you and we'll be in touch.
+                If you're building, backing, or deploying governed intelligence, this is where the
+                conversation starts.
               </p>
             </div>
             <form className="form reveal tick" onSubmit={onSubmit}>
