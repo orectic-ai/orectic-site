@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /* ─────────────────────────────────────────────────────────
    ORECTIC — OS / company-vision site  ·  "Blueprint" system
@@ -11,6 +11,14 @@ import { useEffect, useState } from "react";
 
 const CONTACT_EMAIL = "hello@orectic.ai";
 const OVAE_URL = "https://ovae.ai";
+
+// Illustrative example driving the on-page loop demonstration (#loop).
+const DEMO_STAGES = [
+  { id: "02", label: "Governance", line: "Checked against pricing policy & data-access rules — bounded, approved." },
+  { id: "03", label: "Execution", line: "Drafted in your email tool, grounded in the CRM record + call transcript." },
+  { id: "04", label: "Proof", line: "3 sources cited · written to the audit trail." },
+  { id: "05", label: "Learning", line: "Your edits are captured — the next renewal draft starts sharper." },
+];
 
 const CSS = `
 :root{
@@ -233,6 +241,45 @@ html{scroll-behavior:smooth}
 .os .flow .step:hover{opacity:1}
 .os .flow .step:hover .dot{transform:scale(1.6);filter:drop-shadow(0 0 6px rgba(134,199,214,.55))}
 
+/* EBI R6 — show, don't tell */
+.os .heroproof{margin-top:22px;font-family:'IBM Plex Mono';font-size:12px;color:var(--t3);letter-spacing:.03em;display:flex;align-items:center;gap:9px}
+.os .heroproof .dot{width:7px;height:7px;border-radius:50%;background:var(--sig);animation:livePulse 2.6s ease-in-out infinite;flex:0 0 auto}
+.os .heroproof a{color:var(--sig)}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(134,199,214,0)}50%{box-shadow:0 0 0 5px rgba(134,199,214,.16)}}
+/* evidence chips under proof claims */
+.os .ev{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-family:'IBM Plex Mono';font-size:10.5px}
+.os .ev .chip{border:1px solid var(--line);padding:3px 8px;color:var(--t2);letter-spacing:.04em}
+.os .ev .chip.sig{border-color:rgba(134,199,214,.34);color:var(--sig)}
+.os .ev .q{color:var(--t2)}
+.os .ev .arr{color:var(--cu)}
+/* the loop, demonstrated */
+.os .demo{margin-top:18px;border:1px solid var(--line);padding:26px 30px;background:#070A11}
+.os .demo-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.os .demo-head .cap{font-size:11px;color:var(--cu);letter-spacing:.14em}
+.os .demo-note{font-family:'IBM Plex Mono';font-size:10.5px;color:var(--t3);letter-spacing:.06em}
+.os .demo-intent{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border:1px solid var(--lineH);background:rgba(201,139,114,.05);flex-wrap:wrap}
+.os .demo-tag{flex:0 0 auto;font-size:11px;letter-spacing:.1em;color:var(--cu);min-width:128px}
+.os .demo-text{color:var(--t1);font-size:14px;line-height:1.5}
+.os .demo-stage{display:flex;gap:14px;align-items:flex-start;padding:13px 16px;border-left:1px solid var(--line);margin-left:8px;opacity:0;transform:translateX(-6px);transition:opacity .4s,transform .4s}
+.os .demo-stage.on{opacity:1;transform:none}
+.os .demo-stage .demo-tag{color:var(--sig)}
+.os .demo-stage .demo-text{color:var(--t2);font-size:13.5px;flex:1}
+.os .demo-mk{color:var(--sig);flex:0 0 auto;font-family:'IBM Plex Mono'}
+.os .demo-foot{display:flex;align-items:center;gap:18px;margin-top:20px;flex-wrap:wrap}
+.os .demo-close{font-size:11.5px;color:var(--t3);letter-spacing:.04em;opacity:0;transition:opacity .5s}
+.os .demo-close.on{opacity:1;color:var(--cu)}
+@media(max-width:680px){.os .demo-tag{min-width:0}.os .demo-intent,.os .demo-stage{flex-direction:column;gap:6px}}
+/* not a chatbot / not RPA band */
+.os .diff{border-top:1px solid var(--line);padding:64px 0;background:linear-gradient(180deg,var(--bg),var(--panel))}
+.os .diff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:34px;border:1px solid var(--line)}
+@media(max-width:820px){.os .diff-grid{grid-template-columns:1fr}}
+.os .diff-cell{padding:26px 28px;border-right:1px solid var(--line)}
+.os .diff-cell:last-child{border-right:none}
+@media(max-width:820px){.os .diff-cell{border-right:none;border-bottom:1px solid var(--line)}}
+.os .diff-cell .num{font-family:'IBM Plex Mono';color:var(--cu);font-size:11px;letter-spacing:.12em}
+.os .diff-cell p{margin-top:12px;color:var(--t2);font-size:14.5px;line-height:1.55}
+.os .diff-cell p b{color:var(--t1);font-weight:500}
+
 @media(max-width:600px){ .os .coord{display:none} .os .hero{padding:140px 0 80px} }
 
 @media (prefers-reduced-motion: reduce){
@@ -247,6 +294,26 @@ export default function OsSite() {
   const [hp, setHp] = useState(""); // honeypot — humans never fill this
   const [menuOpen, setMenuOpen] = useState(false);
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+  const [demoStep, setDemoStep] = useState(0); // 0 idle · 1-4 stages revealing · 5 done
+  const demoTimers = useRef([]);
+
+  const runDemo = () => {
+    demoTimers.current.forEach(clearTimeout);
+    demoTimers.current = [];
+    const reduce =
+      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setDemoStep(5);
+      return;
+    }
+    setDemoStep(0);
+    for (let i = 1; i <= 5; i++) {
+      demoTimers.current.push(window.setTimeout(() => setDemoStep(i), i * 750));
+    }
+  };
+
+  // Clear demo timers on unmount.
+  useEffect(() => () => demoTimers.current.forEach(clearTimeout), []);
 
   useEffect(() => {
     const nav = document.getElementById("os-nav");
@@ -425,6 +492,13 @@ export default function OsSite() {
               See OVAE, our first product
             </a>
           </div>
+          <div className="heroproof reveal" style={{ transitionDelay: ".44s" }}>
+            <span className="dot" aria-hidden="true" /> Already shipping —{" "}
+            <a className="sig" href={OVAE_URL} {...ovaeExtra} aria-label="OVAE.ai (opens in a new tab)">
+              OVAE.ai
+            </a>
+            , the first product built on Orectic.
+          </div>
           {/* spec-row doubles as a clickable mini-TOC */}
           <div className="specrow reveal">
             <a href="#system">
@@ -459,26 +533,26 @@ export default function OsSite() {
           <div className="grid3">
             <div className="cell reveal">
               <div className="num mono">SHIFT 01</div>
-              <h3>From documents to decisions</h3>
+              <h3>Extraction finally works</h3>
               <p>
-                The value was never the file. It's the decision the file should have informed —
-                surfaced, in context, when it matters.
+                Turning unstructured expertise — calls, docs, threads — into structured, queryable
+                intelligence only became possible in the last two years.
               </p>
             </div>
             <div className="cell reveal">
               <div className="num mono">SHIFT 02</div>
-              <h3>From answers to actions</h3>
+              <h3>Governance became the bottleneck</h3>
               <p>
-                Answering questions is table stakes. Doing the work — across the tools a business
-                already runs on — is the frontier.
+                Once AI started to act, the hard part stopped being capability and became control —
+                cited, bounded, auditable.
               </p>
             </div>
             <div className="cell reveal">
               <div className="num mono">SHIFT 03</div>
-              <h3>From automation to governance</h3>
+              <h3>Memory is the moat</h3>
               <p>
-                Ungoverned automation is a liability. Cited, bounded, auditable execution is what
-                lets a business actually hand work over.
+                Models commoditize. A business's own intelligence — compounding with every loop —
+                does not.
               </p>
             </div>
           </div>
@@ -614,6 +688,44 @@ export default function OsSite() {
               ↺ RETURN: learning(05) → intent(01) — the loop is self-referential by design.
             </div>
           </div>
+
+          <div className="demo reveal tick">
+            <div className="demo-head">
+              <span className="cap mono">RUN IT — WATCH THE LOOP RUN</span>
+              <span className="demo-note">Illustrative · your data, your tools</span>
+            </div>
+            <div className="demo-intent">
+              <span className="demo-tag mono">01 · INTENT</span>
+              <span className="demo-text">
+                "Draft the renewal email for the Lindqvist account — our real pricing, last call's
+                commitments, in our voice."
+              </span>
+            </div>
+            <div className="demo-stages">
+              {DEMO_STAGES.map((s, i) => (
+                <div key={s.id} className={"demo-stage" + (demoStep >= i + 1 ? " on" : "")}>
+                  <span className="demo-tag mono">
+                    {s.id} · {s.label}
+                  </span>
+                  <span className="demo-text">{s.line}</span>
+                  <span className="demo-mk">✓</span>
+                </div>
+              ))}
+            </div>
+            <div className="demo-foot">
+              <button
+                type="button"
+                className="btn btn-pri"
+                onClick={runDemo}
+                disabled={demoStep > 0 && demoStep < 5}
+              >
+                {demoStep === 0 ? "▶ Run the loop" : demoStep < 5 ? "Running…" : "↺ Run again"}
+              </button>
+              <span className={"demo-close mono" + (demoStep >= 5 ? " on" : "")}>
+                ↺ learning re-enters as intent — the next run starts sharper.
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -663,6 +775,31 @@ export default function OsSite() {
         </div>
       </section>
 
+      <div className="diff">
+        <div className="wrap">
+          <div className="shead reveal">
+            <div className="eyebrow">Not a chatbot. Not RPA.</div>
+            <h2 style={{ fontSize: "clamp(24px,3vw,34px)", marginTop: 14, fontWeight: 300 }}>
+              Adjacent tools stop where Orectic <b>starts.</b>
+            </h2>
+          </div>
+          <div className="diff-grid reveal">
+            <div className="diff-cell">
+              <div className="num mono">VS A CHATBOT</div>
+              <p>It doesn't just answer — it <b>acts</b>, grounded in your data, and shows what it did.</p>
+            </div>
+            <div className="diff-cell">
+              <div className="num mono">VS RPA</div>
+              <p>Governed by architecture — not brittle scripts that break the moment a process changes.</p>
+            </div>
+            <div className="diff-cell">
+              <div className="num mono">THE MOAT</div>
+              <p>Defensibility isn't the model — it's your own intelligence, compounding with every loop.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <section id="proof">
         <div className="wrap">
           <div className="shead reveal">
@@ -683,6 +820,11 @@ export default function OsSite() {
                 Every action traces to the business's own data, voice, and relationships — not a
                 generic model's guess.
               </p>
+              <div className="ev">
+                <span className="chip">CRM</span>
+                <span className="chip">Call transcript</span>
+                <span className="chip">SOW.pdf</span>
+              </div>
             </div>
             <div className="cell reveal">
               <div className="num mono">CITED</div>
@@ -691,6 +833,10 @@ export default function OsSite() {
                 Answers and actions carry their sources. The customer's own organizational
                 intelligence is the proof.
               </p>
+              <div className="ev">
+                <span className="q">"…net-60 payment terms."</span>
+                <span className="chip sig">— Acme MSA · p.4</span>
+              </div>
             </div>
             <div className="cell reveal">
               <div className="num mono">GOVERNED</div>
@@ -699,6 +845,13 @@ export default function OsSite() {
                 Proposed before executed, bounded, and auditable. Control lives in the architecture,
                 not in a policy document.
               </p>
+              <div className="ev">
+                <span className="chip">Proposed</span>
+                <span className="arr">→</span>
+                <span className="chip sig">Approved</span>
+                <span className="arr">→</span>
+                <span className="chip">Ran</span>
+              </div>
             </div>
           </div>
         </div>
