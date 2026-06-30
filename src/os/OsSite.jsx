@@ -318,7 +318,7 @@ export default function OsSite() {
   useEffect(() => {
     const nav = document.getElementById("os-nav");
     const onScroll = () => nav && nav.classList.toggle("scr", window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     const reveals = document.querySelectorAll(".os .reveal");
     const revealAll = () => reveals.forEach((el) => el.classList.add("in"));
@@ -413,7 +413,7 @@ export default function OsSite() {
     <div className="os">
       <style>{CSS}</style>
 
-      <a className="skiplink" href="#thesis">Skip to content</a>
+      <a className="skiplink" href="#main">Skip to content</a>
 
       <nav id="os-nav" aria-label="Primary">
         <div className="wrap nav">
@@ -451,7 +451,7 @@ export default function OsSite() {
         </div>
       </nav>
 
-      <header className="hero">
+      <header className="hero" id="main" tabIndex={-1}>
         <svg className="heroglyph" viewBox="0 0 200 200" aria-hidden="true">
           <circle cx="100" cy="100" r="80" fill="none" stroke="#C98B72" strokeOpacity="0.22" strokeWidth="0.6" />
           <g className="spin">

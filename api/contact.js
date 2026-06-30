@@ -50,6 +50,10 @@ export default async function handler(req, res) {
       .json({ ok: false, error: "Name, email, and message are required" });
   }
 
+  if (!/.+@.+/.test(email)) {
+    return res.status(400).json({ ok: false, error: "A valid email is required" });
+  }
+
   // Bound abuse with simple length caps.
   if (
     name.length > 200 ||
